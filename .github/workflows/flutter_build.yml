@@ -1,0 +1,123 @@
+name: Flutter Full Build
+
+on:
+  push:
+    branches: ["master", "dev"]
+  pull_request:
+    branches: ["master", "dev"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: android
+            os: ubuntu-latest
+            build-cmd: flutter build apk --release
+            artifact-path: build/app/outputs/flutter-apk/app-release.apk
+            artifact-name: android-apk
+
+          - target: ios
+            os: macos-latest
+            build-cmd: flutter build ios --release --no-codesign
+            artifact-path: build/ios/iphoneos
+            artifact-name: ios-build
+
+          - target: web
+            os: ubuntu-latest
+            build-cmd: flutter build web --release
+            artifact-path: build/web
+            artifact-name: web-build
+
+          - target: linux
+            os: ubuntu-latest
+            build-cmd: |
+              sudo apt-get update
+              sudo apt-get install -y \
+                clang \
+                cmake \
+                ninja-build \
+                pkg-config \
+                libmpv-dev \
+                libgtk-3-dev \
+                liblzma-dev \
+                libstdc++6 \
+                libgstreamer1.0-dev \
+                libgstreamer-plugins-base1.0-dev \
+                gstreamer1.0-plugins-base \
+                gstreamer1.0-plugins-good \
+                gstreamer1.0-plugins-bad \
+                gstreamer1.0-plugins-ugly \
+                gstreamer1.0-libav
+              flutter build linux --release
+            artifact-path: build/linux/x64/release/bundle
+            artifact-name: linux-build
+
+          - target: macos
+            os: macos-latest
+            build-cmd: flutter build macos --release
+            artifact-path: build/macos/Build/Products/Release
+            artifact-name: macos-build
+
+          - target: windows
+            os: windows-latest
+            env:
+              CL: /await /D_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS
+            build-cmd: flutter build windows --release
+            artifact-path: build/windows/x64/runner/Release
+            artifact-name: windows-build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java (Android only)
+        if: matrix.target == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.14.0
+        with:
+          channel: "stable"
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:${{ hashFiles('**/pubspec.lock') }}"
+
+      - name: Enable Desktop Platforms
+        run: |
+          flutter config --enable-linux-desktop
+          flutter config --enable-macos-desktop
+          flutter config --enable-windows-desktop
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Check formatting
+        run: dart format --set-exit-if-changed .
+        continue-on-error: true
+
+      - name: Run linter
+        run: flutter analyze
+        continue-on-error: true
+
+      - name: Run tests
+        run: flutter test
+        continue-on-error: true
+
+      - name: Build application
+        run: ${{ matrix.build-cmd }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.artifact-path }}
+          if-no-files-found: error
+          retention-days: 7
