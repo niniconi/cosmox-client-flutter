@@ -23,7 +23,8 @@ class _LibraryViewerPageState extends State<LibraryViewPage> {
   void _fetchResourcesByLid() async {
     _logger.fine('fetch page $_page');
     try {
-      final resources = await SdkProxy.instance.resourceQuery();
+      final resources = await
+      SdkProxy.instance.resourceQuery(lid: BigInt.from(widget.lid));
       _logger.fine('fetched ${resources.length} resources');
       if (!mounted) return;
       setState(() {
@@ -163,5 +164,5 @@ class _LibraryViewerPageState extends State<LibraryViewPage> {
       ),
       body: _buildContent(),
     );
-  }
+ }
 }

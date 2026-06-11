@@ -228,6 +228,7 @@ abstract class RustLibApi extends BaseApi {
     required String name,
     required BigInt lid,
     String? description,
+    required BigInt level,
   });
 
   Future<String> crateApiCosmoxCosmoxSdkResourceAddTag({
@@ -253,6 +254,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<List<Resource>> crateApiCosmoxCosmoxSdkResourceQuery({
     required CosmoxSdk that,
+    required BigInt lid,
   });
 
   Future<void> crateApiCosmoxCosmoxSdkScannerAddTask({
@@ -1537,6 +1539,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     required String name,
     required BigInt lid,
     String? description,
+    required BigInt level,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -1549,6 +1552,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_String(name, serializer);
           sse_encode_u_64(lid, serializer);
           sse_encode_opt_String(description, serializer);
+          sse_encode_u_64(level, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -1561,7 +1565,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_sdk_error,
         ),
         constMeta: kCrateApiCosmoxCosmoxSdkResourceAddConstMeta,
-        argValues: [that, name, lid, description],
+        argValues: [that, name, lid, description, level],
         apiImpl: this,
       ),
     );
@@ -1570,7 +1574,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiCosmoxCosmoxSdkResourceAddConstMeta =>
       const TaskConstMeta(
         debugName: "CosmoxSdk_resourceAdd",
-        argNames: ["that", "name", "lid", "description"],
+        argNames: ["that", "name", "lid", "description", "level"],
       );
 
   @override
@@ -1730,6 +1734,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<List<Resource>> crateApiCosmoxCosmoxSdkResourceQuery({
     required CosmoxSdk that,
+    required BigInt lid,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -1739,6 +1744,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
+          sse_encode_u_64(lid, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -1751,7 +1757,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_sdk_error,
         ),
         constMeta: kCrateApiCosmoxCosmoxSdkResourceQueryConstMeta,
-        argValues: [that],
+        argValues: [that, lid],
         apiImpl: this,
       ),
     );
@@ -1760,7 +1766,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiCosmoxCosmoxSdkResourceQueryConstMeta =>
       const TaskConstMeta(
         debugName: "CosmoxSdk_resourceQuery",
-        argNames: ["that"],
+        argNames: ["that", "lid"],
       );
 
   @override
@@ -4693,11 +4699,13 @@ class CosmoxSdkImpl extends RustOpaque implements CosmoxSdk {
     required String name,
     required BigInt lid,
     String? description,
+    required BigInt level,
   }) => RustLib.instance.api.crateApiCosmoxCosmoxSdkResourceAdd(
     that: this,
     name: name,
     lid: lid,
     description: description,
+    level: level,
   );
 
   Future<String> resourceAddTag({
@@ -4720,8 +4728,10 @@ class CosmoxSdkImpl extends RustOpaque implements CosmoxSdk {
       .api
       .crateApiCosmoxCosmoxSdkResourceGetMetadata(that: this, rid: rid);
 
-  Future<List<Resource>> resourceQuery() =>
-      RustLib.instance.api.crateApiCosmoxCosmoxSdkResourceQuery(that: this);
+  Future<List<Resource>> resourceQuery({required BigInt lid}) => RustLib
+      .instance
+      .api
+      .crateApiCosmoxCosmoxSdkResourceQuery(that: this, lid: lid);
 
   Future<void> scannerAddTask({BigInt? lid, bool? fullScan}) =>
       RustLib.instance.api.crateApiCosmoxCosmoxSdkScannerAddTask(

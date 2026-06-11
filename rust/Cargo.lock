@@ -301,7 +301,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 [[package]]
 name = "cosmox-sdk"
 version = "0.0.1"
-source = "git+ssh://git@github.com/niniconi/cosmox.git?branch=dev#3f4b90e798e0a797ccadfb3eb8fae004fba3fa3b"
+source = "git+https://github.com/niniconi/cosmox.git?branch=dev#4550ca4465cd640e0946845482ee62e770cd79de"
 dependencies = [
  "chrono",
  "reqwest",
@@ -1967,6 +1967,7 @@ dependencies = [
  "idna",
  "percent-encoding",
  "serde",
+ "serde_derive",
 ]
 
 [[package]]

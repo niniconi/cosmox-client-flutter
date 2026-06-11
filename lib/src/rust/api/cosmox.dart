@@ -100,6 +100,7 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
     required String name,
     required BigInt lid,
     String? description,
+    required BigInt level,
   });
 
   Future<String> resourceAddTag({
@@ -113,7 +114,7 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
 
   Future<String> resourceGetMetadata({required BigInt rid});
 
-  Future<List<Resource>> resourceQuery();
+  Future<List<Resource>> resourceQuery({required BigInt lid});
 
   Future<void> scannerAddTask({BigInt? lid, bool? fullScan});
 

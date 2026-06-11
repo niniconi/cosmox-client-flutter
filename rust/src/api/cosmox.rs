@@ -5,6 +5,7 @@ pub use cosmox_sdk::types::{
     UserQueryRequest, UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
+use reqwest::Url;
 
 // ---------------------------------------------------------------------------
 // FRB mirrors — tells codegen to generate Dart data classes for SDK types.
@@ -346,12 +347,16 @@ impl CosmoxSdk {
         self.api.resource_get(rid).await
     }
 
-    pub async fn resourceQuery(&self) -> Result<Vec<Resource>, SdkError> {
+    pub async fn resourceQuery(&self, lid: u64) -> Result<Vec<Resource>, SdkError> {
         self.api
             .resource_query(ResourceQueryRequest {
                 sort: None,
                 page: None,
                 page_size: 40,
+                lid,
+                level: None,
+                max_level: None,
+                min_level: None,
             })
             .await
     }
@@ -483,12 +488,14 @@ impl CosmoxSdk {
         name: String,
         lid: u64,
         description: Option<String>,
+        level: u64,
     ) -> Result<String, SdkError> {
         self.api
             .resource_add(cosmox_sdk::types::ResourceAddRequest {
                 name,
                 lid,
                 description,
+                level,
             })
             .await
             .map(|v| v.to_string())
@@ -629,7 +636,10 @@ impl CosmoxSdk {
 
     pub async fn pluginInstall(&self, url: Option<String>) -> Result<String, SdkError> {
         self.api
-            .plugin_install(cosmox_sdk::types::InstallPlugin { url })
+            .plugin_install(cosmox_sdk::types::InstallPlugin::Url(
+                Url::parse(&url.ok_or(SdkError::Internal("Expect a url".to_string()))?)
+                    .map_err(|err| SdkError::Internal(err.to_string()))?,
+            ))
             .await
     }
 

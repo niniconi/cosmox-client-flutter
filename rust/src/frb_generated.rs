@@ -1805,6 +1805,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_resourceAdd_impl(
             let api_name = <String>::sse_decode(&mut deserializer);
             let api_lid = <u64>::sse_decode(&mut deserializer);
             let api_description = <Option<String>>::sse_decode(&mut deserializer);
+            let api_level = <u64>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -1831,6 +1832,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_resourceAdd_impl(
                             api_name,
                             api_lid,
                             api_description,
+                            api_level,
                         )
                         .await?;
                         Ok(output_ok)
@@ -2106,6 +2108,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
+            let api_lid = <u64>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -2128,7 +2131,8 @@ fn wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
                         }
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok =
-                            crate::api::cosmox::CosmoxSdk::resourceQuery(&*api_that_guard).await?;
+                            crate::api::cosmox::CosmoxSdk::resourceQuery(&*api_that_guard, api_lid)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,

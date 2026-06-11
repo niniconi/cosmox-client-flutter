@@ -153,8 +153,8 @@ class SdkProxy {
   Future<ScannerStatus> scannerStatus() =>
       _value(() => _cosmox.scannerStatus());
 
-  Future<List<Resource>> resourceQuery() =>
-      _value(() => _cosmox.resourceQuery());
+  Future<List<Resource>> resourceQuery({required BigInt lid}) =>
+      _value(() => _cosmox.resourceQuery(lid: lid));
 
   Future<Resource> resourceGet({required BigInt rid}) =>
       _value(() => _cosmox.resourceGet(rid: rid));
@@ -195,8 +195,14 @@ class SdkProxy {
     required String name,
     required BigInt lid,
     String? description,
+    required BigInt level,
   }) => _value(
-    () => _cosmox.resourceAdd(name: name, lid: lid, description: description),
+    () => _cosmox.resourceAdd(
+      name: name,
+      lid: lid,
+      description: description,
+      level: level,
+    ),
   );
 
   Future<void> resourceDelete({required BigInt rid}) =>
