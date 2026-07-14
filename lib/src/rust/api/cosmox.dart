@@ -86,15 +86,21 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
     required bool showHide,
   });
 
-  Future<void> pluginDisable({required BigInt id});
+  Future<void> pluginDisable({required String name});
 
-  Future<void> pluginEnable({required BigInt id});
+  Future<void> pluginEnable({required String name});
 
   Future<String> pluginInfo();
 
   Future<String> pluginInstall({String? url});
 
-  Future<void> pluginUninstall({required BigInt id});
+  Future<List<PluginQueryItem>> pluginQuery({
+    String? name,
+    String? status,
+    String? pluginType,
+  });
+
+  Future<void> pluginUninstall({required String name});
 
   Future<String> resourceAdd({
     required String name,
@@ -343,6 +349,53 @@ class Permission {
           pid == other.pid &&
           name == other.name &&
           description == other.description;
+}
+
+class PluginQueryItem {
+  final String name;
+  final String version;
+  final String description;
+  final String author;
+  final String email;
+  final bool enabled;
+  final String pluginType;
+  final String? error;
+
+  const PluginQueryItem({
+    required this.name,
+    required this.version,
+    required this.description,
+    required this.author,
+    required this.email,
+    required this.enabled,
+    required this.pluginType,
+    this.error,
+  });
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      version.hashCode ^
+      description.hashCode ^
+      author.hashCode ^
+      email.hashCode ^
+      enabled.hashCode ^
+      pluginType.hashCode ^
+      error.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PluginQueryItem &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          version == other.version &&
+          description == other.description &&
+          author == other.author &&
+          email == other.email &&
+          enabled == other.enabled &&
+          pluginType == other.pluginType &&
+          error == other.error;
 }
 
 class PushResponse {

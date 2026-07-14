@@ -280,17 +280,26 @@ class SdkProxy {
 
   Future<String> pluginInfo() => _value(() => _cosmox.pluginInfo());
 
+  Future<List<PluginQueryItem>> pluginQuery({
+    String? name,
+    String? status,
+    String? pluginType,
+  }) => _value(
+    () =>
+        _cosmox.pluginQuery(name: name, status: status, pluginType: pluginType),
+  );
+
   Future<String> pluginInstall({String? url}) =>
       _value(() => _cosmox.pluginInstall(url: url));
 
-  Future<void> pluginUninstall({required BigInt id}) =>
-      _void(() => _cosmox.pluginUninstall(id: id));
+  Future<void> pluginUninstall({required String name}) =>
+      _void(() => _cosmox.pluginUninstall(name: name));
 
-  Future<void> pluginEnable({required BigInt id}) =>
-      _void(() => _cosmox.pluginEnable(id: id));
+  Future<void> pluginEnable({required String name}) =>
+      _void(() => _cosmox.pluginEnable(name: name));
 
-  Future<void> pluginDisable({required BigInt id}) =>
-      _void(() => _cosmox.pluginDisable(id: id));
+  Future<void> pluginDisable({required String name}) =>
+      _void(() => _cosmox.pluginDisable(name: name));
 
   Future<List<Role>> aclQueryRole() => _value(() => _cosmox.aclQueryRole());
 

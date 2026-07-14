@@ -28,7 +28,7 @@
 
 use crate::api::cosmox::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 671401596;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1502532472;
 
 // Section: executor
 
@@ -1512,7 +1512,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginDisable_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
-            let api_id = <u64>::sse_decode(&mut deserializer);
+            let api_name = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -1534,9 +1534,11 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginDisable_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok =
-                            crate::api::cosmox::CosmoxSdk::pluginDisable(&*api_that_guard, api_id)
-                                .await?;
+                        let output_ok = crate::api::cosmox::CosmoxSdk::pluginDisable(
+                            &*api_that_guard,
+                            api_name,
+                        )
+                        .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -1570,7 +1572,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginEnable_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
-            let api_id = <u64>::sse_decode(&mut deserializer);
+            let api_name = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -1593,7 +1595,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginEnable_impl(
                         }
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok =
-                            crate::api::cosmox::CosmoxSdk::pluginEnable(&*api_that_guard, api_id)
+                            crate::api::cosmox::CosmoxSdk::pluginEnable(&*api_that_guard, api_name)
                                 .await?;
                         Ok(output_ok)
                     })()
@@ -1717,6 +1719,70 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginInstall_impl(
         },
     )
 }
+fn wire__crate__api__cosmox__CosmoxSdk_pluginQuery_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "CosmoxSdk_pluginQuery",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
+            >>::sse_decode(&mut deserializer);
+            let api_name = <Option<String>>::sse_decode(&mut deserializer);
+            let api_status = <Option<String>>::sse_decode(&mut deserializer);
+            let api_pluginType = <Option<String>>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::cosmox::SdkError>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::cosmox::CosmoxSdk::pluginQuery(
+                            &*api_that_guard,
+                            api_name,
+                            api_status,
+                            api_pluginType,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -1742,7 +1808,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
-            let api_id = <u64>::sse_decode(&mut deserializer);
+            let api_name = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -1766,7 +1832,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
                         let api_that_guard = api_that_guard.unwrap();
                         let output_ok = crate::api::cosmox::CosmoxSdk::pluginUninstall(
                             &*api_that_guard,
-                            api_id,
+                            api_name,
                         )
                         .await?;
                         Ok(output_ok)
@@ -3960,6 +4026,17 @@ const _: fn() = || {
         let _: Option<String> = Permission.description;
     }
     {
+        let PluginQueryItem = None::<crate::api::cosmox::PluginQueryItem>.unwrap();
+        let _: String = PluginQueryItem.name;
+        let _: String = PluginQueryItem.version;
+        let _: String = PluginQueryItem.description;
+        let _: String = PluginQueryItem.author;
+        let _: String = PluginQueryItem.email;
+        let _: bool = PluginQueryItem.enabled;
+        let _: String = PluginQueryItem.plugin_type;
+        let _: Option<String> = PluginQueryItem.error;
+    }
+    {
         let PushResponse = None::<crate::api::cosmox::PushResponse>.unwrap();
         let _: u64 = PushResponse.pmid;
         let _: u64 = PushResponse.uploaded_size;
@@ -4266,6 +4343,20 @@ impl SseDecode for Vec<crate::api::cosmox::Permission> {
     }
 }
 
+impl SseDecode for Vec<crate::api::cosmox::PluginQueryItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::cosmox::PluginQueryItem>::sse_decode(
+                deserializer,
+            ));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<u64> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4418,6 +4509,30 @@ impl SseDecode for crate::api::cosmox::Permission {
             pid: var_pid,
             name: var_name,
             description: var_description,
+        };
+    }
+}
+
+impl SseDecode for crate::api::cosmox::PluginQueryItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_version = <String>::sse_decode(deserializer);
+        let mut var_description = <String>::sse_decode(deserializer);
+        let mut var_author = <String>::sse_decode(deserializer);
+        let mut var_email = <String>::sse_decode(deserializer);
+        let mut var_enabled = <bool>::sse_decode(deserializer);
+        let mut var_pluginType = <String>::sse_decode(deserializer);
+        let mut var_error = <Option<String>>::sse_decode(deserializer);
+        return crate::api::cosmox::PluginQueryItem {
+            name: var_name,
+            version: var_version,
+            description: var_description,
+            author: var_author,
+            email: var_email,
+            enabled: var_enabled,
+            plugin_type: var_pluginType,
+            error: var_error,
         };
     }
 }
@@ -4782,141 +4897,144 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        30 => wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
+        30 => {
+            wire__crate__api__cosmox__CosmoxSdk_pluginQuery_impl(port, ptr, rust_vec_len, data_len)
+        }
+        31 => wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        31 => {
+        32 => {
             wire__crate__api__cosmox__CosmoxSdk_resourceAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        32 => wire__crate__api__cosmox__CosmoxSdk_resourceAddTag_impl(
+        33 => wire__crate__api__cosmox__CosmoxSdk_resourceAddTag_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        33 => wire__crate__api__cosmox__CosmoxSdk_resourceDelete_impl(
+        34 => wire__crate__api__cosmox__CosmoxSdk_resourceDelete_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        34 => {
+        35 => {
             wire__crate__api__cosmox__CosmoxSdk_resourceGet_impl(port, ptr, rust_vec_len, data_len)
         }
-        35 => wire__crate__api__cosmox__CosmoxSdk_resourceGetMetadata_impl(
+        36 => wire__crate__api__cosmox__CosmoxSdk_resourceGetMetadata_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        36 => wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
+        37 => wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        37 => wire__crate__api__cosmox__CosmoxSdk_scannerAddTask_impl(
+        38 => wire__crate__api__cosmox__CosmoxSdk_scannerAddTask_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        38 => {
+        39 => {
             wire__crate__api__cosmox__CosmoxSdk_scannerInfo_impl(port, ptr, rust_vec_len, data_len)
         }
-        39 => {
+        40 => {
             wire__crate__api__cosmox__CosmoxSdk_scannerScan_impl(port, ptr, rust_vec_len, data_len)
         }
-        40 => wire__crate__api__cosmox__CosmoxSdk_scannerScanAll_impl(
+        41 => wire__crate__api__cosmox__CosmoxSdk_scannerScanAll_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        41 => wire__crate__api__cosmox__CosmoxSdk_scannerStatus_impl(
+        42 => wire__crate__api__cosmox__CosmoxSdk_scannerStatus_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        42 => wire__crate__api__cosmox__CosmoxSdk_search_impl(port, ptr, rust_vec_len, data_len),
-        45 => {
+        43 => wire__crate__api__cosmox__CosmoxSdk_search_impl(port, ptr, rust_vec_len, data_len),
+        46 => {
             wire__crate__api__cosmox__CosmoxSdk_systemAbout_impl(port, ptr, rust_vec_len, data_len)
         }
-        46 => wire__crate__api__cosmox__CosmoxSdk_systemDeleteAll_impl(
+        47 => wire__crate__api__cosmox__CosmoxSdk_systemDeleteAll_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        47 => {
+        48 => {
             wire__crate__api__cosmox__CosmoxSdk_systemInfo_impl(port, ptr, rust_vec_len, data_len)
         }
-        48 => wire__crate__api__cosmox__CosmoxSdk_systemLog_impl(port, ptr, rust_vec_len, data_len),
-        49 => wire__crate__api__cosmox__CosmoxSdk_systemRestart_impl(
+        49 => wire__crate__api__cosmox__CosmoxSdk_systemLog_impl(port, ptr, rust_vec_len, data_len),
+        50 => wire__crate__api__cosmox__CosmoxSdk_systemRestart_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        50 => wire__crate__api__cosmox__CosmoxSdk_systemShutdown_impl(
+        51 => wire__crate__api__cosmox__CosmoxSdk_systemShutdown_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        51 => wire__crate__api__cosmox__CosmoxSdk_tagAdd_impl(port, ptr, rust_vec_len, data_len),
-        52 => {
+        52 => wire__crate__api__cosmox__CosmoxSdk_tagAdd_impl(port, ptr, rust_vec_len, data_len),
+        53 => {
             wire__crate__api__cosmox__CosmoxSdk_tagCatalog_impl(port, ptr, rust_vec_len, data_len)
         }
-        53 => wire__crate__api__cosmox__CosmoxSdk_tagGet_impl(port, ptr, rust_vec_len, data_len),
-        54 => {
+        54 => wire__crate__api__cosmox__CosmoxSdk_tagGet_impl(port, ptr, rust_vec_len, data_len),
+        55 => {
             wire__crate__api__cosmox__CosmoxSdk_tagGroupAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        55 => wire__crate__api__cosmox__CosmoxSdk_tagGroupDelete_impl(
+        56 => wire__crate__api__cosmox__CosmoxSdk_tagGroupDelete_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        56 => {
+        57 => {
             wire__crate__api__cosmox__CosmoxSdk_tagGroupGet_impl(port, ptr, rust_vec_len, data_len)
         }
-        57 => wire__crate__api__cosmox__CosmoxSdk_tagGroupQuery_impl(
+        58 => wire__crate__api__cosmox__CosmoxSdk_tagGroupQuery_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        58 => wire__crate__api__cosmox__CosmoxSdk_tagQuery_impl(port, ptr, rust_vec_len, data_len),
-        59 => {
+        59 => wire__crate__api__cosmox__CosmoxSdk_tagQuery_impl(port, ptr, rust_vec_len, data_len),
+        60 => {
             wire__crate__api__cosmox__CosmoxSdk_userDelete_impl(port, ptr, rust_vec_len, data_len)
         }
-        60 => wire__crate__api__cosmox__CosmoxSdk_userGet_impl(port, ptr, rust_vec_len, data_len),
-        61 => wire__crate__api__cosmox__CosmoxSdk_userQuery_impl(port, ptr, rust_vec_len, data_len),
-        62 => {
+        61 => wire__crate__api__cosmox__CosmoxSdk_userGet_impl(port, ptr, rust_vec_len, data_len),
+        62 => wire__crate__api__cosmox__CosmoxSdk_userQuery_impl(port, ptr, rust_vec_len, data_len),
+        63 => {
             wire__crate__api__cosmox__CosmoxSdk_userRegister_impl(port, ptr, rust_vec_len, data_len)
         }
-        63 => wire__crate__api__cosmox__CosmoxSdk_userRegisterWithProfile_impl(
+        64 => wire__crate__api__cosmox__CosmoxSdk_userRegisterWithProfile_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        64 => {
+        65 => {
             wire__crate__api__cosmox__CosmoxSdk_userRoleAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        65 => wire__crate__api__cosmox__CosmoxSdk_userSelf_impl(port, ptr, rust_vec_len, data_len),
-        66 => wire__crate__api__cosmox__CosmoxSdk_userUploadAvatar_impl(
+        66 => wire__crate__api__cosmox__CosmoxSdk_userSelf_impl(port, ptr, rust_vec_len, data_len),
+        67 => wire__crate__api__cosmox__CosmoxSdk_userUploadAvatar_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        67 => wire__crate__api__cosmox__init_app_impl(port, ptr, rust_vec_len, data_len),
+        68 => wire__crate__api__cosmox__init_app_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -4932,8 +5050,8 @@ fn pde_ffi_dispatcher_sync_impl(
         9 => wire__crate__api__cosmox__CosmoxSdk_getToken_impl(ptr, rust_vec_len, data_len),
         20 => wire__crate__api__cosmox__CosmoxSdk_logout_impl(ptr, rust_vec_len, data_len),
         23 => wire__crate__api__cosmox__CosmoxSdk_new_impl(ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__cosmox__CosmoxSdk_setToken_impl(ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__cosmox__CosmoxSdk_staticItem_impl(ptr, rust_vec_len, data_len),
+        44 => wire__crate__api__cosmox__CosmoxSdk_setToken_impl(ptr, rust_vec_len, data_len),
+        45 => wire__crate__api__cosmox__CosmoxSdk_staticItem_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5083,6 +5201,33 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::Permission
     for crate::api::cosmox::Permission
 {
     fn into_into_dart(self) -> FrbWrapper<crate::api::cosmox::Permission> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::PluginQueryItem> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.name.into_into_dart().into_dart(),
+            self.0.version.into_into_dart().into_dart(),
+            self.0.description.into_into_dart().into_dart(),
+            self.0.author.into_into_dart().into_dart(),
+            self.0.email.into_into_dart().into_dart(),
+            self.0.enabled.into_into_dart().into_dart(),
+            self.0.plugin_type.into_into_dart().into_dart(),
+            self.0.error.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::cosmox::PluginQueryItem>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::PluginQueryItem>>
+    for crate::api::cosmox::PluginQueryItem
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::cosmox::PluginQueryItem> {
         self.into()
     }
 }
@@ -5534,6 +5679,16 @@ impl SseEncode for Vec<crate::api::cosmox::Permission> {
     }
 }
 
+impl SseEncode for Vec<crate::api::cosmox::PluginQueryItem> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::cosmox::PluginQueryItem>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<u64> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5660,6 +5815,20 @@ impl SseEncode for crate::api::cosmox::Permission {
         <u64>::sse_encode(self.pid, serializer);
         <String>::sse_encode(self.name, serializer);
         <Option<String>>::sse_encode(self.description, serializer);
+    }
+}
+
+impl SseEncode for crate::api::cosmox::PluginQueryItem {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.name, serializer);
+        <String>::sse_encode(self.version, serializer);
+        <String>::sse_encode(self.description, serializer);
+        <String>::sse_encode(self.author, serializer);
+        <String>::sse_encode(self.email, serializer);
+        <bool>::sse_encode(self.enabled, serializer);
+        <String>::sse_encode(self.plugin_type, serializer);
+        <Option<String>>::sse_encode(self.error, serializer);
     }
 }
 
@@ -5864,7 +6033,7 @@ mod io {
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
-    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate
@@ -5903,7 +6072,7 @@ mod web {
     };
     use flutter_rust_bridge::for_generated::wasm_bindgen;
     use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
+    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate

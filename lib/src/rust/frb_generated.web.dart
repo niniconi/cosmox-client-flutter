@@ -105,6 +105,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Permission> dco_decode_list_permission(dynamic raw);
 
   @protected
+  List<PluginQueryItem> dco_decode_list_plugin_query_item(dynamic raw);
+
+  @protected
   Uint64List dco_decode_list_prim_u_64_strict(dynamic raw);
 
   @protected
@@ -145,6 +148,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Permission dco_decode_permission(dynamic raw);
+
+  @protected
+  PluginQueryItem dco_decode_plugin_query_item(dynamic raw);
 
   @protected
   PushResponse dco_decode_push_response(dynamic raw);
@@ -286,6 +292,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Permission> sse_decode_list_permission(SseDeserializer deserializer);
 
   @protected
+  List<PluginQueryItem> sse_decode_list_plugin_query_item(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   Uint64List sse_decode_list_prim_u_64_strict(SseDeserializer deserializer);
 
   @protected
@@ -328,6 +339,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   Permission sse_decode_permission(SseDeserializer deserializer);
+
+  @protected
+  PluginQueryItem sse_decode_plugin_query_item(SseDeserializer deserializer);
 
   @protected
   PushResponse sse_decode_push_response(SseDeserializer deserializer);
@@ -484,6 +498,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_plugin_query_item(
+    List<PluginQueryItem> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_prim_u_64_strict(
     Uint64List self,
     SseSerializer serializer,
@@ -533,6 +553,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_permission(Permission self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_query_item(
+    PluginQueryItem self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_push_response(PushResponse self, SseSerializer serializer);

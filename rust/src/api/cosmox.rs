@@ -1,8 +1,8 @@
 pub use cosmox_sdk::types::{
     InitStatus, LibrariesRelatedTags, Library, LibraryPath, LibraryQueryRequest, LibraryType,
-    Permission, PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo, ScannerStatus,
-    SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent,
-    UserQueryRequest, UserResp,
+    Permission, PluginQueryItem, PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo,
+    ScannerStatus, SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin,
+    UserLoginIdent, UserQueryRequest, UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
 use reqwest::Url;
@@ -124,6 +124,18 @@ pub struct _InitStatus {
 pub struct _PushResponse {
     pub pmid: u64,
     pub uploaded_size: u64,
+}
+
+#[flutter_rust_bridge::frb(mirror(PluginQueryItem))]
+pub struct _PluginQueryItem {
+    pub name: String,
+    pub version: String,
+    pub description: String,
+    pub author: String,
+    pub email: String,
+    pub enabled: bool,
+    pub plugin_type: String,
+    pub error: Option<String>,
 }
 
 #[flutter_rust_bridge::frb(mirror(Role))]
@@ -634,6 +646,24 @@ impl CosmoxSdk {
         self.api.plugin_info().await
     }
 
+    pub async fn pluginQuery(
+        &self,
+        name: Option<String>,
+        status: Option<String>,
+        pluginType: Option<String>,
+    ) -> Result<Vec<PluginQueryItem>, SdkError> {
+        self.api
+            .plugin_query(cosmox_sdk::types::PluginQueryRequest {
+                name,
+                status,
+                plugin_type: pluginType,
+                sort: None,
+                page: None,
+                page_size: 40,
+            })
+            .await
+    }
+
     pub async fn pluginInstall(&self, url: Option<String>) -> Result<String, SdkError> {
         self.api
             .plugin_install(cosmox_sdk::types::InstallPlugin::Url(
@@ -643,16 +673,16 @@ impl CosmoxSdk {
             .await
     }
 
-    pub async fn pluginUninstall(&self, id: u64) -> Result<(), SdkError> {
-        self.api.plugin_uninstall(id).await
+    pub async fn pluginUninstall(&self, name: String) -> Result<(), SdkError> {
+        self.api.plugin_uninstall(name).await
     }
 
-    pub async fn pluginEnable(&self, id: u64) -> Result<(), SdkError> {
-        self.api.plugin_enable(id).await
+    pub async fn pluginEnable(&self, name: String) -> Result<(), SdkError> {
+        self.api.plugin_enable(name).await
     }
 
-    pub async fn pluginDisable(&self, id: u64) -> Result<(), SdkError> {
-        self.api.plugin_disable(id).await
+    pub async fn pluginDisable(&self, name: String) -> Result<(), SdkError> {
+        self.api.plugin_disable(name).await
     }
 
     // -----------------------------------------------------------------------

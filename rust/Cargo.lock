@@ -301,7 +301,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 [[package]]
 name = "cosmox-sdk"
 version = "0.0.1"
-source = "git+https://github.com/niniconi/cosmox.git?branch=dev#4550ca4465cd640e0946845482ee62e770cd79de"
+source = "git+https://github.com/niniconi/cosmox.git?branch=dev#570387d16c3d4dc3192b7635d22c48d9d148293a"
 dependencies = [
  "chrono",
  "reqwest",
