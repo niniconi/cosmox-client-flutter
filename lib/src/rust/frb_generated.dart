@@ -289,13 +289,7 @@ abstract class RustLibApi extends BaseApi {
 
   Future<String> crateApiCosmoxCosmoxSdkSearch({
     required CosmoxSdk that,
-    required String keyword,
-    List<String>? tags,
-    BigInt? lid,
-    String? beforeCreateDatetime,
-    String? afterCreateDatetime,
-    String? beforeLastUpdateDatetime,
-    String? afterLastUpdateDatetime,
+    required SearchRequest request,
   });
 
   void crateApiCosmoxCosmoxSdkSetToken({
@@ -2007,13 +2001,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @override
   Future<String> crateApiCosmoxCosmoxSdkSearch({
     required CosmoxSdk that,
-    required String keyword,
-    List<String>? tags,
-    BigInt? lid,
-    String? beforeCreateDatetime,
-    String? afterCreateDatetime,
-    String? beforeLastUpdateDatetime,
-    String? afterLastUpdateDatetime,
+    required SearchRequest request,
   }) {
     return handler.executeNormal(
       NormalTask(
@@ -2023,13 +2011,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          sse_encode_String(keyword, serializer);
-          sse_encode_opt_list_String(tags, serializer);
-          sse_encode_opt_box_autoadd_u_64(lid, serializer);
-          sse_encode_opt_String(beforeCreateDatetime, serializer);
-          sse_encode_opt_String(afterCreateDatetime, serializer);
-          sse_encode_opt_String(beforeLastUpdateDatetime, serializer);
-          sse_encode_opt_String(afterLastUpdateDatetime, serializer);
+          sse_encode_box_autoadd_search_request(request, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
             serializer,
@@ -2042,16 +2024,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           decodeErrorData: sse_decode_sdk_error,
         ),
         constMeta: kCrateApiCosmoxCosmoxSdkSearchConstMeta,
-        argValues: [
-          that,
-          keyword,
-          tags,
-          lid,
-          beforeCreateDatetime,
-          afterCreateDatetime,
-          beforeLastUpdateDatetime,
-          afterLastUpdateDatetime,
-        ],
+        argValues: [that, request],
         apiImpl: this,
       ),
     );
@@ -2060,16 +2033,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   TaskConstMeta get kCrateApiCosmoxCosmoxSdkSearchConstMeta =>
       const TaskConstMeta(
         debugName: "CosmoxSdk_search",
-        argNames: [
-          "that",
-          "keyword",
-          "tags",
-          "lid",
-          "beforeCreateDatetime",
-          "afterCreateDatetime",
-          "beforeLastUpdateDatetime",
-          "afterLastUpdateDatetime",
-        ],
+        argNames: ["that", "request"],
       );
 
   @override
@@ -3051,6 +3015,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SearchRequest dco_decode_box_autoadd_search_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_search_request(raw);
+  }
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_u_64(raw);
@@ -3395,6 +3365,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SearchRequest dco_decode_search_request(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    return SearchRequest(
+      keyword: dco_decode_String(arr[0]),
+      tags: dco_decode_opt_list_String(arr[1]),
+      lid: dco_decode_opt_box_autoadd_u_64(arr[2]),
+      beforeCreateDatetime: dco_decode_opt_String(arr[3]),
+      afterCreateDatetime: dco_decode_opt_String(arr[4]),
+      beforeLastUpdateDatetime: dco_decode_opt_String(arr[5]),
+      afterLastUpdateDatetime: dco_decode_opt_String(arr[6]),
+      sort: dco_decode_opt_String(arr[7]),
+      page: dco_decode_opt_box_autoadd_u_64(arr[8]),
+      pageSize: dco_decode_u_64(arr[9]),
+    );
+  }
+
+  @protected
   SystemInfo dco_decode_system_info(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3580,6 +3570,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_bool(deserializer));
+  }
+
+  @protected
+  SearchRequest sse_decode_box_autoadd_search_request(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_search_request(deserializer));
   }
 
   @protected
@@ -4015,6 +4013,33 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SearchRequest sse_decode_search_request(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_keyword = sse_decode_String(deserializer);
+    var var_tags = sse_decode_opt_list_String(deserializer);
+    var var_lid = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_beforeCreateDatetime = sse_decode_opt_String(deserializer);
+    var var_afterCreateDatetime = sse_decode_opt_String(deserializer);
+    var var_beforeLastUpdateDatetime = sse_decode_opt_String(deserializer);
+    var var_afterLastUpdateDatetime = sse_decode_opt_String(deserializer);
+    var var_sort = sse_decode_opt_String(deserializer);
+    var var_page = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_pageSize = sse_decode_u_64(deserializer);
+    return SearchRequest(
+      keyword: var_keyword,
+      tags: var_tags,
+      lid: var_lid,
+      beforeCreateDatetime: var_beforeCreateDatetime,
+      afterCreateDatetime: var_afterCreateDatetime,
+      beforeLastUpdateDatetime: var_beforeLastUpdateDatetime,
+      afterLastUpdateDatetime: var_afterLastUpdateDatetime,
+      sort: var_sort,
+      page: var_page,
+      pageSize: var_pageSize,
+    );
+  }
+
+  @protected
   SystemInfo sse_decode_system_info(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_os = sse_decode_String(deserializer);
@@ -4203,6 +4228,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_bool(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_search_request(
+    SearchRequest self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_search_request(self, serializer);
   }
 
   @protected
@@ -4581,6 +4615,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_search_request(SearchRequest self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.keyword, serializer);
+    sse_encode_opt_list_String(self.tags, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.lid, serializer);
+    sse_encode_opt_String(self.beforeCreateDatetime, serializer);
+    sse_encode_opt_String(self.afterCreateDatetime, serializer);
+    sse_encode_opt_String(self.beforeLastUpdateDatetime, serializer);
+    sse_encode_opt_String(self.afterLastUpdateDatetime, serializer);
+    sse_encode_opt_String(self.sort, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.page, serializer);
+    sse_encode_u_64(self.pageSize, serializer);
+  }
+
+  @protected
   void sse_encode_system_info(SystemInfo self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_String(self.os, serializer);
@@ -4901,24 +4950,10 @@ class CosmoxSdkImpl extends RustOpaque implements CosmoxSdk {
   Future<ScannerStatus> scannerStatus() =>
       RustLib.instance.api.crateApiCosmoxCosmoxSdkScannerStatus(that: this);
 
-  Future<String> search({
-    required String keyword,
-    List<String>? tags,
-    BigInt? lid,
-    String? beforeCreateDatetime,
-    String? afterCreateDatetime,
-    String? beforeLastUpdateDatetime,
-    String? afterLastUpdateDatetime,
-  }) => RustLib.instance.api.crateApiCosmoxCosmoxSdkSearch(
-    that: this,
-    keyword: keyword,
-    tags: tags,
-    lid: lid,
-    beforeCreateDatetime: beforeCreateDatetime,
-    afterCreateDatetime: afterCreateDatetime,
-    beforeLastUpdateDatetime: beforeLastUpdateDatetime,
-    afterLastUpdateDatetime: afterLastUpdateDatetime,
-  );
+  Future<String> search({required SearchRequest request}) => RustLib
+      .instance
+      .api
+      .crateApiCosmoxCosmoxSdkSearch(that: this, request: request);
 
   void setToken({required String token}) => RustLib.instance.api
       .crateApiCosmoxCosmoxSdkSetToken(that: this, token: token);

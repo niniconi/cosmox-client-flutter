@@ -2520,13 +2520,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_search_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
-            let api_keyword = <String>::sse_decode(&mut deserializer);
-            let api_tags = <Option<Vec<String>>>::sse_decode(&mut deserializer);
-            let api_lid = <Option<u64>>::sse_decode(&mut deserializer);
-            let api_beforeCreateDatetime = <Option<String>>::sse_decode(&mut deserializer);
-            let api_afterCreateDatetime = <Option<String>>::sse_decode(&mut deserializer);
-            let api_beforeLastUpdateDatetime = <Option<String>>::sse_decode(&mut deserializer);
-            let api_afterLastUpdateDatetime = <Option<String>>::sse_decode(&mut deserializer);
+            let api_request = <crate::api::cosmox::SearchRequest>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse::<_, crate::api::cosmox::SdkError>(
@@ -2548,17 +2542,9 @@ fn wire__crate__api__cosmox__CosmoxSdk_search_impl(
                             }
                         }
                         let api_that_guard = api_that_guard.unwrap();
-                        let output_ok = crate::api::cosmox::CosmoxSdk::search(
-                            &*api_that_guard,
-                            api_keyword,
-                            api_tags,
-                            api_lid,
-                            api_beforeCreateDatetime,
-                            api_afterCreateDatetime,
-                            api_beforeLastUpdateDatetime,
-                            api_afterLastUpdateDatetime,
-                        )
-                        .await?;
+                        let output_ok =
+                            crate::api::cosmox::CosmoxSdk::search(&*api_that_guard, api_request)
+                                .await?;
                         Ok(output_ok)
                     })()
                     .await,
@@ -4085,6 +4071,19 @@ const _: fn() = || {
         }
     }
     {
+        let SearchRequest = None::<crate::api::cosmox::SearchRequest>.unwrap();
+        let _: String = SearchRequest.keyword;
+        let _: Option<Vec<String>> = SearchRequest.tags;
+        let _: Option<u64> = SearchRequest.lid;
+        let _: Option<String> = SearchRequest.before_create_datetime;
+        let _: Option<String> = SearchRequest.after_create_datetime;
+        let _: Option<String> = SearchRequest.before_last_update_datetime;
+        let _: Option<String> = SearchRequest.after_last_update_datetime;
+        let _: Option<String> = SearchRequest.sort;
+        let _: Option<u64> = SearchRequest.page;
+        let _: u64 = SearchRequest.page_size;
+    }
+    {
         let SystemInfo = None::<crate::api::cosmox::SystemInfo>.unwrap();
         let _: String = SystemInfo.os;
         let _: String = SystemInfo.name;
@@ -4660,6 +4659,34 @@ impl SseDecode for crate::api::cosmox::SdkError {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseDecode for crate::api::cosmox::SearchRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_keyword = <String>::sse_decode(deserializer);
+        let mut var_tags = <Option<Vec<String>>>::sse_decode(deserializer);
+        let mut var_lid = <Option<u64>>::sse_decode(deserializer);
+        let mut var_beforeCreateDatetime = <Option<String>>::sse_decode(deserializer);
+        let mut var_afterCreateDatetime = <Option<String>>::sse_decode(deserializer);
+        let mut var_beforeLastUpdateDatetime = <Option<String>>::sse_decode(deserializer);
+        let mut var_afterLastUpdateDatetime = <Option<String>>::sse_decode(deserializer);
+        let mut var_sort = <Option<String>>::sse_decode(deserializer);
+        let mut var_page = <Option<u64>>::sse_decode(deserializer);
+        let mut var_pageSize = <u64>::sse_decode(deserializer);
+        return crate::api::cosmox::SearchRequest {
+            keyword: var_keyword,
+            tags: var_tags,
+            lid: var_lid,
+            before_create_datetime: var_beforeCreateDatetime,
+            after_create_datetime: var_afterCreateDatetime,
+            before_last_update_datetime: var_beforeLastUpdateDatetime,
+            after_last_update_datetime: var_afterLastUpdateDatetime,
+            sort: var_sort,
+            page: var_page,
+            page_size: var_pageSize,
+        };
     }
 }
 
@@ -5381,6 +5408,41 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::SdkError>>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::SearchRequest> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.keyword.into_into_dart().into_dart(),
+            self.0.tags.into_into_dart().into_dart(),
+            self.0.lid.into_into_dart().into_dart(),
+            self.0.before_create_datetime.into_into_dart().into_dart(),
+            self.0.after_create_datetime.into_into_dart().into_dart(),
+            self.0
+                .before_last_update_datetime
+                .into_into_dart()
+                .into_dart(),
+            self.0
+                .after_last_update_datetime
+                .into_into_dart()
+                .into_dart(),
+            self.0.sort.into_into_dart().into_dart(),
+            self.0.page.into_into_dart().into_dart(),
+            self.0.page_size.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::cosmox::SearchRequest>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::SearchRequest>>
+    for crate::api::cosmox::SearchRequest
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::cosmox::SearchRequest> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::SystemInfo> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5922,6 +5984,22 @@ impl SseEncode for crate::api::cosmox::SdkError {
                 unimplemented!("");
             }
         }
+    }
+}
+
+impl SseEncode for crate::api::cosmox::SearchRequest {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.keyword, serializer);
+        <Option<Vec<String>>>::sse_encode(self.tags, serializer);
+        <Option<u64>>::sse_encode(self.lid, serializer);
+        <Option<String>>::sse_encode(self.before_create_datetime, serializer);
+        <Option<String>>::sse_encode(self.after_create_datetime, serializer);
+        <Option<String>>::sse_encode(self.before_last_update_datetime, serializer);
+        <Option<String>>::sse_encode(self.after_last_update_datetime, serializer);
+        <Option<String>>::sse_encode(self.sort, serializer);
+        <Option<u64>>::sse_encode(self.page, serializer);
+        <u64>::sse_encode(self.page_size, serializer);
     }
 }
 

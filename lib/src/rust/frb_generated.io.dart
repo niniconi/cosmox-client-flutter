@@ -59,6 +59,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
+  SearchRequest dco_decode_box_autoadd_search_request(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw);
 
   @protected
@@ -175,6 +178,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SdkError dco_decode_sdk_error(dynamic raw);
 
   @protected
+  SearchRequest dco_decode_search_request(dynamic raw);
+
+  @protected
   SystemInfo dco_decode_system_info(dynamic raw);
 
   @protected
@@ -242,6 +248,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  SearchRequest sse_decode_box_autoadd_search_request(
+    SseDeserializer deserializer,
+  );
 
   @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
@@ -366,6 +377,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   SdkError sse_decode_sdk_error(SseDeserializer deserializer);
 
   @protected
+  SearchRequest sse_decode_search_request(SseDeserializer deserializer);
+
+  @protected
   SystemInfo sse_decode_system_info(SseDeserializer deserializer);
 
   @protected
@@ -437,6 +451,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_search_request(
+    SearchRequest self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
@@ -581,6 +601,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_sdk_error(SdkError self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_search_request(SearchRequest self, SseSerializer serializer);
 
   @protected
   void sse_encode_system_info(SystemInfo self, SseSerializer serializer);

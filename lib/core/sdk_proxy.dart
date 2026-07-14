@@ -248,13 +248,18 @@ class SdkProxy {
     String? afterLastUpdateDatetime,
   }) => _value(
     () => _cosmox.search(
-      keyword: keyword,
-      tags: tags,
-      lid: lid,
-      beforeCreateDatetime: beforeCreateDatetime,
-      afterCreateDatetime: afterCreateDatetime,
-      beforeLastUpdateDatetime: beforeLastUpdateDatetime,
-      afterLastUpdateDatetime: afterLastUpdateDatetime,
+      request: SearchRequest(
+        keyword: keyword,
+        tags: tags,
+        lid: lid,
+        beforeCreateDatetime: beforeCreateDatetime,
+        afterCreateDatetime: afterCreateDatetime,
+        beforeLastUpdateDatetime: beforeLastUpdateDatetime,
+        afterLastUpdateDatetime: afterLastUpdateDatetime,
+        sort: null,
+        page: null,
+        pageSize: BigInt.from(40),
+      ),
     ),
   );
 

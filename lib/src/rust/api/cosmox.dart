@@ -132,15 +132,7 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
 
   Future<ScannerStatus> scannerStatus();
 
-  Future<String> search({
-    required String keyword,
-    List<String>? tags,
-    BigInt? lid,
-    String? beforeCreateDatetime,
-    String? afterCreateDatetime,
-    String? beforeLastUpdateDatetime,
-    String? afterLastUpdateDatetime,
-  });
+  Future<String> search({required SearchRequest request});
 
   void setToken({required String token});
 
@@ -532,6 +524,61 @@ sealed class SdkError with _$SdkError implements FrbException {
   }) = SdkError_HttpError;
   const factory SdkError.serdeError(String field0) = SdkError_SerdeError;
   const factory SdkError.internal(String field0) = SdkError_Internal;
+}
+
+class SearchRequest {
+  final String keyword;
+  final List<String>? tags;
+  final BigInt? lid;
+  final String? beforeCreateDatetime;
+  final String? afterCreateDatetime;
+  final String? beforeLastUpdateDatetime;
+  final String? afterLastUpdateDatetime;
+  final String? sort;
+  final BigInt? page;
+  final BigInt pageSize;
+
+  const SearchRequest({
+    required this.keyword,
+    this.tags,
+    this.lid,
+    this.beforeCreateDatetime,
+    this.afterCreateDatetime,
+    this.beforeLastUpdateDatetime,
+    this.afterLastUpdateDatetime,
+    this.sort,
+    this.page,
+    required this.pageSize,
+  });
+
+  @override
+  int get hashCode =>
+      keyword.hashCode ^
+      tags.hashCode ^
+      lid.hashCode ^
+      beforeCreateDatetime.hashCode ^
+      afterCreateDatetime.hashCode ^
+      beforeLastUpdateDatetime.hashCode ^
+      afterLastUpdateDatetime.hashCode ^
+      sort.hashCode ^
+      page.hashCode ^
+      pageSize.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SearchRequest &&
+          runtimeType == other.runtimeType &&
+          keyword == other.keyword &&
+          tags == other.tags &&
+          lid == other.lid &&
+          beforeCreateDatetime == other.beforeCreateDatetime &&
+          afterCreateDatetime == other.afterCreateDatetime &&
+          beforeLastUpdateDatetime == other.beforeLastUpdateDatetime &&
+          afterLastUpdateDatetime == other.afterLastUpdateDatetime &&
+          sort == other.sort &&
+          page == other.page &&
+          pageSize == other.pageSize;
 }
 
 class SystemInfo {

@@ -1,8 +1,8 @@
 pub use cosmox_sdk::types::{
     InitStatus, LibrariesRelatedTags, Library, LibraryPath, LibraryQueryRequest, LibraryType,
     Permission, PluginQueryItem, PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo,
-    ScannerStatus, SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin,
-    UserLoginIdent, UserQueryRequest, UserResp,
+    ScannerStatus, SearchRequest, SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest,
+    User, UserLogin, UserLoginIdent, UserQueryRequest, UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
 use reqwest::Url;
@@ -150,6 +150,20 @@ pub struct _Permission {
     pub pid: u64,
     pub name: String,
     pub description: Option<String>,
+}
+
+#[flutter_rust_bridge::frb(mirror(SearchRequest))]
+pub struct _SearchRequest {
+    pub keyword: String,
+    pub tags: Option<Vec<String>>,
+    pub lid: Option<u64>,
+    pub before_create_datetime: Option<String>,
+    pub after_create_datetime: Option<String>,
+    pub before_last_update_datetime: Option<String>,
+    pub after_last_update_datetime: Option<String>,
+    pub sort: Option<String>,
+    pub page: Option<u64>,
+    pub page_size: u64,
 }
 
 pub type SdkError = cosmox_sdk::SdkError;
@@ -592,31 +606,8 @@ impl CosmoxSdk {
     // Search
     // -----------------------------------------------------------------------
 
-    pub async fn search(
-        &self,
-        keyword: String,
-        tags: Option<Vec<String>>,
-        lid: Option<u64>,
-        beforeCreateDatetime: Option<String>,
-        afterCreateDatetime: Option<String>,
-        beforeLastUpdateDatetime: Option<String>,
-        afterLastUpdateDatetime: Option<String>,
-    ) -> Result<String, SdkError> {
-        self.api
-            .search(cosmox_sdk::types::SearchRequest {
-                keyword,
-                tags,
-                lid,
-                before_create_datetime: beforeCreateDatetime,
-                after_create_datetime: afterCreateDatetime,
-                before_last_update_datetime: beforeLastUpdateDatetime,
-                after_last_update_datetime: afterLastUpdateDatetime,
-                sort: None,
-                page: None,
-                page_size: 40,
-            })
-            .await
-            .map(|v| v.to_string())
+    pub async fn search(&self, request: SearchRequest) -> Result<String, SdkError> {
+        self.api.search(request).await.map(|v| v.to_string())
     }
 
     // -----------------------------------------------------------------------
