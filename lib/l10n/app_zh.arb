@@ -221,5 +221,13 @@
   "continueAction": "继续",
   "setupAdminAccount": "为服务器设置管理员账户。",
   "librarySetup": "媒体库设置",
-  "manageLibraries": "管理你的媒体库。"
+  "manageLibraries": "管理你的媒体库。",
+
+  "noPlugins": "没有插件",
+  "uninstall": "卸载",
+  "enable": "启用",
+  "disable": "禁用",
+  "pluginUrl": "插件URL",
+  "pluginInstalled": "插件已安装",
+  "confirmUninstallPlugin": "卸载插件"
 }

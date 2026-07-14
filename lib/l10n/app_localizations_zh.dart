@@ -649,4 +649,25 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get manageLibraries => '管理你的媒体库。';
+
+  @override
+  String get noPlugins => '没有插件';
+
+  @override
+  String get uninstall => '卸载';
+
+  @override
+  String get enable => '启用';
+
+  @override
+  String get disable => '禁用';
+
+  @override
+  String get pluginUrl => '插件URL';
+
+  @override
+  String get pluginInstalled => '插件已安装';
+
+  @override
+  String get confirmUninstallPlugin => '卸载插件';
 }

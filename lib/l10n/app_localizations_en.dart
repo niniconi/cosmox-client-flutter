@@ -657,4 +657,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get manageLibraries => 'Manage your media libraries.';
+
+  @override
+  String get noPlugins => 'No plugins';
+
+  @override
+  String get uninstall => 'Uninstall';
+
+  @override
+  String get enable => 'Enable';
+
+  @override
+  String get disable => 'Disable';
+
+  @override
+  String get pluginUrl => 'Plugin URL';
+
+  @override
+  String get pluginInstalled => 'Plugin installed';
+
+  @override
+  String get confirmUninstallPlugin => 'Uninstall plugin';
 }

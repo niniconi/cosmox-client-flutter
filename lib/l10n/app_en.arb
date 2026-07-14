@@ -221,5 +221,13 @@
   "continueAction": "Continue",
   "setupAdminAccount": "Set up the administrator account for your server.",
   "librarySetup": "Library Setup",
-  "manageLibraries": "Manage your media libraries."
+  "manageLibraries": "Manage your media libraries.",
+
+  "noPlugins": "No plugins",
+  "uninstall": "Uninstall",
+  "enable": "Enable",
+  "disable": "Disable",
+  "pluginUrl": "Plugin URL",
+  "pluginInstalled": "Plugin installed",
+  "confirmUninstallPlugin": "Uninstall plugin"
 }

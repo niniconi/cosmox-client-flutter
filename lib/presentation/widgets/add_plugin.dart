@@ -1,44 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:cosmox_client/core/sdk_proxy.dart';
 
 class AddPluginComponent extends StatefulWidget {
   const AddPluginComponent({super.key});
+
   @override
-  State<StatefulWidget> createState() => _AddPluginComponentState();
+  State<AddPluginComponent> createState() => _AddPluginComponentState();
 }
 
 class _AddPluginComponentState extends State<AddPluginComponent> {
+  final _urlController = TextEditingController();
+  bool _installing = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _install() async {
+    final url = _urlController.text.trim();
+    if (url.isEmpty) {
+      setState(() => _error = 'Please enter a plugin URL.');
+      return;
+    }
+
+    setState(() {
+      _installing = true;
+      _error = null;
+    });
+
+    try {
+      await SdkProxy.instance.pluginInstall(url: url);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Plugin installed successfully')),
+        );
+        context.pop(true);
+      }
+    } catch (error) {
+      setState(() {
+        _installing = false;
+        _error = 'Failed to install plugin: $error';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuEntry> dropdownMenuEntries = const [
-      DropdownMenuEntry(value: 0, label: "jar"),
-      DropdownMenuEntry(value: 1, label: "yaml"),
-    ];
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListBody(
-          children: [
-            const Text(""),
-            DropdownMenu(
-              initialSelection: dropdownMenuEntries[0],
-              dropdownMenuEntries: dropdownMenuEntries,
-              onSelected: (index) {},
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('Install Plugin', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 20),
+          TextField(
+            controller: _urlController,
+            decoration: InputDecoration(
+              labelText: 'Plugin URL',
+              hintText: 'https://example.com/plugin.tar.gz',
+              border: const OutlineInputBorder(),
+              errorText: _error,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: const Text("Cancel"),
-                ),
-                ElevatedButton(onPressed: null, child: const Text("Save")),
-              ],
-            ),
-          ],
-        ),
+            enabled: !_installing,
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: _installing ? null : () => context.pop(false),
+                child: const Text('Cancel'),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                onPressed: _installing ? null : _install,
+                child: _installing
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Install'),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

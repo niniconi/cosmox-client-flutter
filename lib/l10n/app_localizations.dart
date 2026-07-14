@@ -1381,6 +1381,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage your media libraries.'**
   String get manageLibraries;
+
+  /// No description provided for @noPlugins.
+  ///
+  /// In en, this message translates to:
+  /// **'No plugins'**
+  String get noPlugins;
+
+  /// No description provided for @uninstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Uninstall'**
+  String get uninstall;
+
+  /// No description provided for @enable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get enable;
+
+  /// No description provided for @disable.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get disable;
+
+  /// No description provided for @pluginUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Plugin URL'**
+  String get pluginUrl;
+
+  /// No description provided for @pluginInstalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Plugin installed'**
+  String get pluginInstalled;
+
+  /// No description provided for @confirmUninstallPlugin.
+  ///
+  /// In en, this message translates to:
+  /// **'Uninstall plugin'**
+  String get confirmUninstallPlugin;
 }
 
 class _AppLocalizationsDelegate
