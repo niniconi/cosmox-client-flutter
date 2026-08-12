@@ -1,11 +1,13 @@
 pub use cosmox_sdk::types::{
     InitStatus, LibrariesRelatedTags, Library, LibraryPath, LibraryQueryRequest, LibraryType,
-    Permission, PluginQueryItem, PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo,
-    ScannerStatus, SearchRequest, SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest,
-    User, UserLogin, UserLoginIdent, UserQueryRequest, UserResp,
+    Metadata, MetadataType, Permission, PluginQueryItem, PushResponse, Resource,
+    ResourceQueryRequest, Role, ScannerInfo, ScannerStatus, SearchRequest, SystemInfo, Tag,
+    TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent, UserQueryRequest,
+    UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
 use reqwest::Url;
+use std::collections::HashMap;
 
 // ---------------------------------------------------------------------------
 // FRB mirrors — tells codegen to generate Dart data classes for SDK types.
@@ -175,6 +177,71 @@ pub enum _SdkError {
     HttpError { status: i32, message: String },
     SerdeError(String),
     Internal(String),
+}
+
+#[flutter_rust_bridge::frb(mirror(MetadataType))]
+pub enum _MetadataType {
+    File,
+    Directory,
+    Network,
+    Virtual,
+}
+
+/// FRB-friendly mirror of the SDK's recursive `Metadata<()>` tree.
+///
+/// `Arc<Mutex<>>` sub-metadatas are flattened into a plain recursive `Vec`,
+/// and the `PhantomData` marker is dropped, so codegen produces a clean Dart
+/// class.
+#[derive(Debug, Clone)]
+pub struct MetadataNode {
+    pub lid: u64,
+    pub rid: u64,
+    pub file_size: u64,
+    pub file_cnt: u64,
+    pub name: String,
+    pub alias_name: Vec<String>,
+    pub origin_name: String,
+    pub description: String,
+    pub flags: u32,
+    pub metadata_type: MetadataType,
+    pub origin: String,
+    pub data_file_map_id: Option<u64>,
+    pub cover_file_map_id: Option<u64>,
+    pub sub_metadatas: Vec<MetadataNode>,
+    pub url: String,
+    pub checksum: String,
+    pub extend: HashMap<String, String>,
+}
+
+impl From<Metadata<()>> for MetadataNode {
+    fn from(meta: Metadata<()>) -> Self {
+        Self {
+            lid: meta.lid,
+            rid: meta.rid,
+            file_size: meta.file_size,
+            file_cnt: meta.file_cnt,
+            name: meta.name,
+            alias_name: meta.alias_name,
+            origin_name: meta.origin_name,
+            description: meta.description,
+            flags: meta.flags,
+            metadata_type: meta.metadata_type,
+            origin: meta.origin,
+            data_file_map_id: meta.data_file_map_id,
+            cover_file_map_id: meta.cover_file_map_id,
+            sub_metadatas: meta
+                .sub_metadatas
+                .into_iter()
+                .map(|arc| {
+                    let inner = arc.lock().unwrap_or_else(|e| e.into_inner()).clone();
+                    MetadataNode::from(inner)
+                })
+                .collect(),
+            url: meta.url,
+            checksum: meta.checksum.iter().map(|b| format!("{:02x}", b)).collect(),
+            extend: meta.extend,
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -591,15 +658,25 @@ impl CosmoxSdk {
     // Metadata
     // -----------------------------------------------------------------------
 
-    pub async fn metadataQuery(&self, rootNode: u64, depth: u64) -> Result<String, SdkError> {
+    pub async fn metadataQuery(
+        &self,
+        rootNode: Option<u64>,
+        depth: u64,
+    ) -> Result<MetadataNode, SdkError> {
+        let key = rootNode
+            .map(cosmox_sdk::types::MetadataQueryKey::Id)
+            .unwrap_or(cosmox_sdk::types::MetadataQueryKey::Root);
         self.api
-            .metadata_query(rootNode, depth as usize)
+            .metadata_query::<()>(key, depth as usize)
             .await
-            .map(|v| v.to_string())
+            .map(MetadataNode::from)
     }
 
-    pub async fn metadataGet(&self, mid: u64) -> Result<String, SdkError> {
-        self.api.metadata_get(mid).await.map(|v| v.to_string())
+    pub async fn metadataGet(&self, mid: u64) -> Result<MetadataNode, SdkError> {
+        self.api
+            .metadata_get::<()>(mid)
+            .await
+            .map(MetadataNode::from)
     }
 
     // -----------------------------------------------------------------------

@@ -28,7 +28,7 @@
 
 use crate::api::cosmox::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
-use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
 
 // Section: boilerplate
@@ -1298,7 +1298,7 @@ fn wire__crate__api__cosmox__CosmoxSdk_metadataQuery_impl(
             let api_that = <RustOpaqueMoi<
                 flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
             >>::sse_decode(&mut deserializer);
-            let api_rootNode = <u64>::sse_decode(&mut deserializer);
+            let api_rootNode = <Option<u64>>::sse_decode(&mut deserializer);
             let api_depth = <u64>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
@@ -4155,6 +4155,14 @@ impl SseDecode for chrono::NaiveDateTime {
     }
 }
 
+impl SseDecode for std::collections::HashMap<String, String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <Vec<(String, String)>>::sse_decode(deserializer);
+        return inner.into_iter().collect();
+    }
+}
+
 impl SseDecode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>>
 {
@@ -4330,6 +4338,18 @@ impl SseDecode for Vec<crate::api::cosmox::LibraryType> {
     }
 }
 
+impl SseDecode for Vec<crate::api::cosmox::MetadataNode> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::cosmox::MetadataNode>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::cosmox::Permission> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4375,6 +4395,18 @@ impl SseDecode for Vec<u8> {
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<u8>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<(String, String)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<(String, String)>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -4451,6 +4483,63 @@ impl SseDecode for Vec<crate::api::cosmox::User> {
             ans_.push(<crate::api::cosmox::User>::sse_decode(deserializer));
         }
         return ans_;
+    }
+}
+
+impl SseDecode for crate::api::cosmox::MetadataNode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_lid = <u64>::sse_decode(deserializer);
+        let mut var_rid = <u64>::sse_decode(deserializer);
+        let mut var_fileSize = <u64>::sse_decode(deserializer);
+        let mut var_fileCnt = <u64>::sse_decode(deserializer);
+        let mut var_name = <String>::sse_decode(deserializer);
+        let mut var_aliasName = <Vec<String>>::sse_decode(deserializer);
+        let mut var_originName = <String>::sse_decode(deserializer);
+        let mut var_description = <String>::sse_decode(deserializer);
+        let mut var_flags = <u32>::sse_decode(deserializer);
+        let mut var_metadataType = <crate::api::cosmox::MetadataType>::sse_decode(deserializer);
+        let mut var_origin = <String>::sse_decode(deserializer);
+        let mut var_dataFileMapId = <Option<u64>>::sse_decode(deserializer);
+        let mut var_coverFileMapId = <Option<u64>>::sse_decode(deserializer);
+        let mut var_subMetadatas =
+            <Vec<crate::api::cosmox::MetadataNode>>::sse_decode(deserializer);
+        let mut var_url = <String>::sse_decode(deserializer);
+        let mut var_checksum = <String>::sse_decode(deserializer);
+        let mut var_extend = <std::collections::HashMap<String, String>>::sse_decode(deserializer);
+        return crate::api::cosmox::MetadataNode {
+            lid: var_lid,
+            rid: var_rid,
+            file_size: var_fileSize,
+            file_cnt: var_fileCnt,
+            name: var_name,
+            alias_name: var_aliasName,
+            origin_name: var_originName,
+            description: var_description,
+            flags: var_flags,
+            metadata_type: var_metadataType,
+            origin: var_origin,
+            data_file_map_id: var_dataFileMapId,
+            cover_file_map_id: var_coverFileMapId,
+            sub_metadatas: var_subMetadatas,
+            url: var_url,
+            checksum: var_checksum,
+            extend: var_extend,
+        };
+    }
+}
+
+impl SseDecode for crate::api::cosmox::MetadataType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::cosmox::MetadataType::File,
+            1 => crate::api::cosmox::MetadataType::Directory,
+            2 => crate::api::cosmox::MetadataType::Network,
+            3 => crate::api::cosmox::MetadataType::Virtual,
+            _ => unreachable!("Invalid variant for MetadataType: {}", inner),
+        };
     }
 }
 
@@ -4562,6 +4651,15 @@ impl SseDecode
             <Vec<crate::api::cosmox::LibrariesRelatedTags>>::sse_decode(deserializer);
         let mut var_field2 = <Vec<crate::api::cosmox::LibraryPath>>::sse_decode(deserializer);
         return (var_field0, var_field1, var_field2);
+    }
+}
+
+impl SseDecode for (String, String) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_field0 = <String>::sse_decode(deserializer);
+        let mut var_field1 = <String>::sse_decode(deserializer);
+        return (var_field0, var_field1);
     }
 }
 
@@ -4754,6 +4852,13 @@ impl SseDecode for u16 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         deserializer.cursor.read_u16::<NativeEndian>().unwrap()
+    }
+}
+
+impl SseDecode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        deserializer.cursor.read_u32::<NativeEndian>().unwrap()
     }
 }
 
@@ -5210,6 +5315,65 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::LibraryTyp
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::cosmox::MetadataNode {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.lid.into_into_dart().into_dart(),
+            self.rid.into_into_dart().into_dart(),
+            self.file_size.into_into_dart().into_dart(),
+            self.file_cnt.into_into_dart().into_dart(),
+            self.name.into_into_dart().into_dart(),
+            self.alias_name.into_into_dart().into_dart(),
+            self.origin_name.into_into_dart().into_dart(),
+            self.description.into_into_dart().into_dart(),
+            self.flags.into_into_dart().into_dart(),
+            self.metadata_type.into_into_dart().into_dart(),
+            self.origin.into_into_dart().into_dart(),
+            self.data_file_map_id.into_into_dart().into_dart(),
+            self.cover_file_map_id.into_into_dart().into_dart(),
+            self.sub_metadatas.into_into_dart().into_dart(),
+            self.url.into_into_dart().into_dart(),
+            self.checksum.into_into_dart().into_dart(),
+            self.extend.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::cosmox::MetadataNode
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::cosmox::MetadataNode>
+    for crate::api::cosmox::MetadataNode
+{
+    fn into_into_dart(self) -> crate::api::cosmox::MetadataNode {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::MetadataType> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self.0 {
+            crate::api::cosmox::MetadataType::File => 0.into_dart(),
+            crate::api::cosmox::MetadataType::Directory => 1.into_dart(),
+            crate::api::cosmox::MetadataType::Network => 2.into_dart(),
+            crate::api::cosmox::MetadataType::Virtual => 3.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::cosmox::MetadataType>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::MetadataType>>
+    for crate::api::cosmox::MetadataType
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::cosmox::MetadataType> {
+        self.into()
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::Permission> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -5595,6 +5759,13 @@ impl SseEncode for chrono::NaiveDateTime {
     }
 }
 
+impl SseEncode for std::collections::HashMap<String, String> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<(String, String)>>::sse_encode(self.into_iter().collect(), serializer);
+    }
+}
+
 impl SseEncode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>>
 {
@@ -5731,6 +5902,16 @@ impl SseEncode for Vec<crate::api::cosmox::LibraryType> {
     }
 }
 
+impl SseEncode for Vec<crate::api::cosmox::MetadataNode> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::cosmox::MetadataNode>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::cosmox::Permission> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5767,6 +5948,16 @@ impl SseEncode for Vec<u8> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <u8>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<(String, String)> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <(String, String)>::sse_encode(item, serializer);
         }
     }
 }
@@ -5828,6 +6019,47 @@ impl SseEncode for Vec<crate::api::cosmox::User> {
         for item in self {
             <crate::api::cosmox::User>::sse_encode(item, serializer);
         }
+    }
+}
+
+impl SseEncode for crate::api::cosmox::MetadataNode {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <u64>::sse_encode(self.lid, serializer);
+        <u64>::sse_encode(self.rid, serializer);
+        <u64>::sse_encode(self.file_size, serializer);
+        <u64>::sse_encode(self.file_cnt, serializer);
+        <String>::sse_encode(self.name, serializer);
+        <Vec<String>>::sse_encode(self.alias_name, serializer);
+        <String>::sse_encode(self.origin_name, serializer);
+        <String>::sse_encode(self.description, serializer);
+        <u32>::sse_encode(self.flags, serializer);
+        <crate::api::cosmox::MetadataType>::sse_encode(self.metadata_type, serializer);
+        <String>::sse_encode(self.origin, serializer);
+        <Option<u64>>::sse_encode(self.data_file_map_id, serializer);
+        <Option<u64>>::sse_encode(self.cover_file_map_id, serializer);
+        <Vec<crate::api::cosmox::MetadataNode>>::sse_encode(self.sub_metadatas, serializer);
+        <String>::sse_encode(self.url, serializer);
+        <String>::sse_encode(self.checksum, serializer);
+        <std::collections::HashMap<String, String>>::sse_encode(self.extend, serializer);
+    }
+}
+
+impl SseEncode for crate::api::cosmox::MetadataType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::cosmox::MetadataType::File => 0,
+                crate::api::cosmox::MetadataType::Directory => 1,
+                crate::api::cosmox::MetadataType::Network => 2,
+                crate::api::cosmox::MetadataType::Virtual => 3,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 
@@ -5914,6 +6146,14 @@ impl SseEncode
         <crate::api::cosmox::Library>::sse_encode(self.0, serializer);
         <Vec<crate::api::cosmox::LibrariesRelatedTags>>::sse_encode(self.1, serializer);
         <Vec<crate::api::cosmox::LibraryPath>>::sse_encode(self.2, serializer);
+    }
+}
+
+impl SseEncode for (String, String) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.0, serializer);
+        <String>::sse_encode(self.1, serializer);
     }
 }
 
@@ -6048,6 +6288,13 @@ impl SseEncode for u16 {
     }
 }
 
+impl SseEncode for u32 {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        serializer.cursor.write_u32::<NativeEndian>(self).unwrap();
+    }
+}
+
 impl SseEncode for u64 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -6111,7 +6358,7 @@ mod io {
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };
-    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate
@@ -6150,7 +6397,7 @@ mod web {
     };
     use flutter_rust_bridge::for_generated::wasm_bindgen;
     use flutter_rust_bridge::for_generated::wasm_bindgen::prelude::*;
-    use flutter_rust_bridge::for_generated::{Lifetimeable, Lockable, transform_result_dco};
+    use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
     use flutter_rust_bridge::{Handler, IntoIntoDart};
 
     // Section: boilerplate

@@ -233,8 +233,8 @@ class SdkProxy {
     required bool showHide,
   }) => _value(() => _cosmox.pathSubPath(path: path, showHide: showHide));
 
-  Future<String> metadataQuery({
-    required BigInt rootNode,
+  Future<MetadataNode> metadataQuery({
+    BigInt? rootNode,
     required BigInt depth,
   }) => _value(() => _cosmox.metadataQuery(rootNode: rootNode, depth: depth));
 
@@ -276,7 +276,7 @@ class SdkProxy {
   Future<String> resourceGetMetadata({required BigInt rid}) =>
       _value(() => _cosmox.resourceGetMetadata(rid: rid));
 
-  Future<String> metadataGet({required BigInt mid}) =>
+  Future<MetadataNode> metadataGet({required BigInt mid}) =>
       _value(() => _cosmox.metadataGet(mid: mid));
 
   Future<String> openapi() => _value(() => _cosmox.openapi());

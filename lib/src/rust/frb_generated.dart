@@ -177,14 +177,14 @@ abstract class RustLibApi extends BaseApi {
 
   void crateApiCosmoxCosmoxSdkLogout({required CosmoxSdk that});
 
-  Future<String> crateApiCosmoxCosmoxSdkMetadataGet({
+  Future<MetadataNode> crateApiCosmoxCosmoxSdkMetadataGet({
     required CosmoxSdk that,
     required BigInt mid,
   });
 
-  Future<String> crateApiCosmoxCosmoxSdkMetadataQuery({
+  Future<MetadataNode> crateApiCosmoxCosmoxSdkMetadataQuery({
     required CosmoxSdk that,
-    required BigInt rootNode,
+    BigInt? rootNode,
     required BigInt depth,
   });
 
@@ -1170,7 +1170,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       const TaskConstMeta(debugName: "CosmoxSdk_logout", argNames: ["that"]);
 
   @override
-  Future<String> crateApiCosmoxCosmoxSdkMetadataGet({
+  Future<MetadataNode> crateApiCosmoxCosmoxSdkMetadataGet({
     required CosmoxSdk that,
     required BigInt mid,
   }) {
@@ -1191,7 +1191,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
+          decodeSuccessData: sse_decode_metadata_node,
           decodeErrorData: sse_decode_sdk_error,
         ),
         constMeta: kCrateApiCosmoxCosmoxSdkMetadataGetConstMeta,
@@ -1208,9 +1208,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<String> crateApiCosmoxCosmoxSdkMetadataQuery({
+  Future<MetadataNode> crateApiCosmoxCosmoxSdkMetadataQuery({
     required CosmoxSdk that,
-    required BigInt rootNode,
+    BigInt? rootNode,
     required BigInt depth,
   }) {
     return handler.executeNormal(
@@ -1221,7 +1221,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             that,
             serializer,
           );
-          sse_encode_u_64(rootNode, serializer);
+          sse_encode_opt_box_autoadd_u_64(rootNode, serializer);
           sse_encode_u_64(depth, serializer);
           pdeCallFfi(
             generalizedFrbRustBinding,
@@ -1231,7 +1231,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
         },
         codec: SseCodec(
-          decodeSuccessData: sse_decode_String,
+          decodeSuccessData: sse_decode_metadata_node,
           decodeErrorData: sse_decode_sdk_error,
         ),
         constMeta: kCrateApiCosmoxCosmoxSdkMetadataQueryConstMeta,
@@ -2988,6 +2988,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  Map<String, String> dco_decode_Map_String_String_None(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return Map.fromEntries(
+      dco_decode_list_record_string_string(
+        raw,
+      ).map((e) => MapEntry(e.$1, e.$2)),
+    );
+  }
+
+  @protected
   CosmoxSdk
   dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerCosmoxSdk(
     dynamic raw,
@@ -3138,6 +3148,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<MetadataNode> dco_decode_list_metadata_node(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_metadata_node).toList();
+  }
+
+  @protected
   List<Permission> dco_decode_list_permission(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_permission).toList();
@@ -3165,6 +3181,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as Uint8List;
+  }
+
+  @protected
+  List<(String, String)> dco_decode_list_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>).map(dco_decode_record_string_string).toList();
   }
 
   @protected
@@ -3201,6 +3223,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   List<User> dco_decode_list_user(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_user).toList();
+  }
+
+  @protected
+  MetadataNode dco_decode_metadata_node(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 17)
+      throw Exception('unexpected arr length: expect 17 but see ${arr.length}');
+    return MetadataNode(
+      lid: dco_decode_u_64(arr[0]),
+      rid: dco_decode_u_64(arr[1]),
+      fileSize: dco_decode_u_64(arr[2]),
+      fileCnt: dco_decode_u_64(arr[3]),
+      name: dco_decode_String(arr[4]),
+      aliasName: dco_decode_list_String(arr[5]),
+      originName: dco_decode_String(arr[6]),
+      description: dco_decode_String(arr[7]),
+      flags: dco_decode_u_32(arr[8]),
+      metadataType: dco_decode_metadata_type(arr[9]),
+      origin: dco_decode_String(arr[10]),
+      dataFileMapId: dco_decode_opt_box_autoadd_u_64(arr[11]),
+      coverFileMapId: dco_decode_opt_box_autoadd_u_64(arr[12]),
+      subMetadatas: dco_decode_list_metadata_node(arr[13]),
+      url: dco_decode_String(arr[14]),
+      checksum: dco_decode_String(arr[15]),
+      extend: dco_decode_Map_String_String_None(arr[16]),
+    );
+  }
+
+  @protected
+  MetadataType dco_decode_metadata_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return MetadataType.values[raw as int];
   }
 
   @protected
@@ -3285,6 +3340,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dco_decode_list_libraries_related_tags(arr[1]),
       dco_decode_list_library_path(arr[2]),
     );
+  }
+
+  @protected
+  (String, String) dco_decode_record_string_string(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2) {
+      throw Exception('Expected 2 elements, got ${arr.length}');
+    }
+    return (dco_decode_String(arr[0]), dco_decode_String(arr[1]));
   }
 
   @protected
@@ -3445,6 +3510,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int dco_decode_u_32(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as int;
+  }
+
+  @protected
   BigInt dco_decode_u_64(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dcoDecodeU64(raw);
@@ -3539,6 +3610,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_i_64(deserializer);
     return DateTime.fromMicrosecondsSinceEpoch(inner.toInt(), isUtc: true);
+  }
+
+  @protected
+  Map<String, String> sse_decode_Map_String_String_None(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_list_record_string_string(deserializer);
+    return Map.fromEntries(inner.map((e) => MapEntry(e.$1, e.$2)));
   }
 
   @protected
@@ -3718,6 +3798,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<MetadataNode> sse_decode_list_metadata_node(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <MetadataNode>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_metadata_node(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<Permission> sse_decode_list_permission(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
 
@@ -3762,6 +3856,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var len_ = sse_decode_i_32(deserializer);
     return deserializer.buffer.getUint8List(len_);
+  }
+
+  @protected
+  List<(String, String)> sse_decode_list_record_string_string(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <(String, String)>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_record_string_string(deserializer));
+    }
+    return ans_;
   }
 
   @protected
@@ -3836,6 +3944,54 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ans_.add(sse_decode_user(deserializer));
     }
     return ans_;
+  }
+
+  @protected
+  MetadataNode sse_decode_metadata_node(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_lid = sse_decode_u_64(deserializer);
+    var var_rid = sse_decode_u_64(deserializer);
+    var var_fileSize = sse_decode_u_64(deserializer);
+    var var_fileCnt = sse_decode_u_64(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_aliasName = sse_decode_list_String(deserializer);
+    var var_originName = sse_decode_String(deserializer);
+    var var_description = sse_decode_String(deserializer);
+    var var_flags = sse_decode_u_32(deserializer);
+    var var_metadataType = sse_decode_metadata_type(deserializer);
+    var var_origin = sse_decode_String(deserializer);
+    var var_dataFileMapId = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_coverFileMapId = sse_decode_opt_box_autoadd_u_64(deserializer);
+    var var_subMetadatas = sse_decode_list_metadata_node(deserializer);
+    var var_url = sse_decode_String(deserializer);
+    var var_checksum = sse_decode_String(deserializer);
+    var var_extend = sse_decode_Map_String_String_None(deserializer);
+    return MetadataNode(
+      lid: var_lid,
+      rid: var_rid,
+      fileSize: var_fileSize,
+      fileCnt: var_fileCnt,
+      name: var_name,
+      aliasName: var_aliasName,
+      originName: var_originName,
+      description: var_description,
+      flags: var_flags,
+      metadataType: var_metadataType,
+      origin: var_origin,
+      dataFileMapId: var_dataFileMapId,
+      coverFileMapId: var_coverFileMapId,
+      subMetadatas: var_subMetadatas,
+      url: var_url,
+      checksum: var_checksum,
+      extend: var_extend,
+    );
+  }
+
+  @protected
+  MetadataType sse_decode_metadata_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return MetadataType.values[inner];
   }
 
   @protected
@@ -3936,6 +4092,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_field1 = sse_decode_list_libraries_related_tags(deserializer);
     var var_field2 = sse_decode_list_library_path(deserializer);
     return (var_field0, var_field1, var_field2);
+  }
+
+  @protected
+  (String, String) sse_decode_record_string_string(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_field0 = sse_decode_String(deserializer);
+    var var_field1 = sse_decode_String(deserializer);
+    return (var_field0, var_field1);
   }
 
   @protected
@@ -4099,6 +4265,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  int sse_decode_u_32(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return deserializer.buffer.getUint32();
+  }
+
+  @protected
   BigInt sse_decode_u_64(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getBigUint64();
@@ -4195,6 +4367,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_64(
       PlatformInt64Util.from(self.microsecondsSinceEpoch),
+      serializer,
+    );
+  }
+
+  @protected
+  void sse_encode_Map_String_String_None(
+    Map<String, String> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_record_string_string(
+      self.entries.map((e) => (e.key, e.value)).toList(),
       serializer,
     );
   }
@@ -4357,6 +4541,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_metadata_node(
+    List<MetadataNode> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_metadata_node(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_permission(
     List<Permission> self,
     SseSerializer serializer,
@@ -4410,6 +4606,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_i_32(self.length, serializer);
     serializer.buffer.putUint8List(self);
+  }
+
+  @protected
+  void sse_encode_list_record_string_string(
+    List<(String, String)> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_record_string_string(item, serializer);
+    }
   }
 
   @protected
@@ -4470,6 +4678,34 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (final item in self) {
       sse_encode_user(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_metadata_node(MetadataNode self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_u_64(self.lid, serializer);
+    sse_encode_u_64(self.rid, serializer);
+    sse_encode_u_64(self.fileSize, serializer);
+    sse_encode_u_64(self.fileCnt, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_list_String(self.aliasName, serializer);
+    sse_encode_String(self.originName, serializer);
+    sse_encode_String(self.description, serializer);
+    sse_encode_u_32(self.flags, serializer);
+    sse_encode_metadata_type(self.metadataType, serializer);
+    sse_encode_String(self.origin, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.dataFileMapId, serializer);
+    sse_encode_opt_box_autoadd_u_64(self.coverFileMapId, serializer);
+    sse_encode_list_metadata_node(self.subMetadatas, serializer);
+    sse_encode_String(self.url, serializer);
+    sse_encode_String(self.checksum, serializer);
+    sse_encode_Map_String_String_None(self.extend, serializer);
+  }
+
+  @protected
+  void sse_encode_metadata_type(MetadataType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -4555,6 +4791,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_library(self.$1, serializer);
     sse_encode_list_libraries_related_tags(self.$2, serializer);
     sse_encode_list_library_path(self.$3, serializer);
+  }
+
+  @protected
+  void sse_encode_record_string_string(
+    (String, String) self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.$1, serializer);
+    sse_encode_String(self.$2, serializer);
   }
 
   @protected
@@ -4670,6 +4916,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_u_16(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint16(self);
+  }
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    serializer.buffer.putUint32(self);
   }
 
   @protected
@@ -4843,11 +5095,13 @@ class CosmoxSdkImpl extends RustOpaque implements CosmoxSdk {
   void logout() =>
       RustLib.instance.api.crateApiCosmoxCosmoxSdkLogout(that: this);
 
-  Future<String> metadataGet({required BigInt mid}) => RustLib.instance.api
+  Future<MetadataNode> metadataGet({required BigInt mid}) => RustLib
+      .instance
+      .api
       .crateApiCosmoxCosmoxSdkMetadataGet(that: this, mid: mid);
 
-  Future<String> metadataQuery({
-    required BigInt rootNode,
+  Future<MetadataNode> metadataQuery({
+    BigInt? rootNode,
     required BigInt depth,
   }) => RustLib.instance.api.crateApiCosmoxCosmoxSdkMetadataQuery(
     that: this,

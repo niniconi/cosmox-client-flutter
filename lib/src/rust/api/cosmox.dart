@@ -8,6 +8,8 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'cosmox.freezed.dart';
 
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`, `from`
+
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>>
 abstract class CosmoxSdk implements RustOpaqueInterface {
   Future<void> aclAddPermission({required String name, String? description});
@@ -66,12 +68,9 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
 
   void logout();
 
-  Future<String> metadataGet({required BigInt mid});
+  Future<MetadataNode> metadataGet({required BigInt mid});
 
-  Future<String> metadataQuery({
-    required BigInt rootNode,
-    required BigInt depth,
-  });
+  Future<MetadataNode> metadataQuery({BigInt? rootNode, required BigInt depth});
 
   /// New the cosmox sdk client (sync — no network call).
   factory CosmoxSdk({required String hostname, required int port}) => RustLib
@@ -322,6 +321,96 @@ class LibraryType {
           scanMode == other.scanMode &&
           label == other.label;
 }
+
+/// FRB-friendly mirror of the SDK's recursive `Metadata<()>` tree.
+///
+/// `Arc<Mutex<>>` sub-metadatas are flattened into a plain recursive `Vec`,
+/// and the `PhantomData` marker is dropped, so codegen produces a clean Dart
+/// class.
+class MetadataNode {
+  final BigInt lid;
+  final BigInt rid;
+  final BigInt fileSize;
+  final BigInt fileCnt;
+  final String name;
+  final List<String> aliasName;
+  final String originName;
+  final String description;
+  final int flags;
+  final MetadataType metadataType;
+  final String origin;
+  final BigInt? dataFileMapId;
+  final BigInt? coverFileMapId;
+  final List<MetadataNode> subMetadatas;
+  final String url;
+  final String checksum;
+  final Map<String, String> extend;
+
+  const MetadataNode({
+    required this.lid,
+    required this.rid,
+    required this.fileSize,
+    required this.fileCnt,
+    required this.name,
+    required this.aliasName,
+    required this.originName,
+    required this.description,
+    required this.flags,
+    required this.metadataType,
+    required this.origin,
+    this.dataFileMapId,
+    this.coverFileMapId,
+    required this.subMetadatas,
+    required this.url,
+    required this.checksum,
+    required this.extend,
+  });
+
+  @override
+  int get hashCode =>
+      lid.hashCode ^
+      rid.hashCode ^
+      fileSize.hashCode ^
+      fileCnt.hashCode ^
+      name.hashCode ^
+      aliasName.hashCode ^
+      originName.hashCode ^
+      description.hashCode ^
+      flags.hashCode ^
+      metadataType.hashCode ^
+      origin.hashCode ^
+      dataFileMapId.hashCode ^
+      coverFileMapId.hashCode ^
+      subMetadatas.hashCode ^
+      url.hashCode ^
+      checksum.hashCode ^
+      extend.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MetadataNode &&
+          runtimeType == other.runtimeType &&
+          lid == other.lid &&
+          rid == other.rid &&
+          fileSize == other.fileSize &&
+          fileCnt == other.fileCnt &&
+          name == other.name &&
+          aliasName == other.aliasName &&
+          originName == other.originName &&
+          description == other.description &&
+          flags == other.flags &&
+          metadataType == other.metadataType &&
+          origin == other.origin &&
+          dataFileMapId == other.dataFileMapId &&
+          coverFileMapId == other.coverFileMapId &&
+          subMetadatas == other.subMetadatas &&
+          url == other.url &&
+          checksum == other.checksum &&
+          extend == other.extend;
+}
+
+enum MetadataType { file, directory, network, virtual }
 
 class Permission {
   final BigInt pid;
