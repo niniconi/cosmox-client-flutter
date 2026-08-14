@@ -279,6 +279,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get coreTags => '核心标签';
 
   @override
+  String get castTab => '角色';
+
+  @override
+  String get staffTab => '制作人员';
+
+  @override
+  String get season => '季';
+
+  @override
+  String get voiceActors => '声优';
+
+  @override
   String get invalidUsername => '用户名无效';
 
   @override

@@ -638,6 +638,30 @@ abstract class AppLocalizations {
   /// **'Core Tags'**
   String get coreTags;
 
+  /// No description provided for @castTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Cast'**
+  String get castTab;
+
+  /// No description provided for @staffTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get staffTab;
+
+  /// No description provided for @season.
+  ///
+  /// In en, this message translates to:
+  /// **'Season'**
+  String get season;
+
+  /// No description provided for @voiceActors.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice Actors'**
+  String get voiceActors;
+
   /// No description provided for @invalidUsername.
   ///
   /// In en, this message translates to:

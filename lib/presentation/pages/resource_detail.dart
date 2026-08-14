@@ -1,14 +1,20 @@
 import 'dart:ui';
 
+import 'package:cosmox_client/core/sdk_proxy.dart';
+import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client/presentation/pages/error.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/cast_tab.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/episodes_tab.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/intro_tab.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
+import 'package:cosmox_client/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
-import 'package:cosmox_client/presentation/pages/error.dart';
 
-typedef Detail = (List<Tag>, Resource);
+/// One resource's assembled detail view: the base [Resource] row plus its
+/// metadata tree root ([MetadataNode], the same `rid`).
+typedef Detail = ({Resource resource, MetadataNode metadata});
 
 class ResourceDetailPage extends StatefulWidget {
   const ResourceDetailPage({super.key, required this.rid});
@@ -21,38 +27,15 @@ class ResourceDetailPage extends StatefulWidget {
 class _ResourceDetailPageState extends State<ResourceDetailPage> {
   final Logger _logger = Logger('ResourceDetailPage');
   final Detail _dumpyData = (
-    <Tag>[],
-    Resource(
+    resource: Resource(
       rid: BigInt.zero,
       name: "    ",
       description: "",
       createDatetime: DateTime.now(),
       lastUpdateDatetime: DateTime.now(),
     ),
+    metadata: _emptyMetadata(),
   );
-  final List<String> _tags = [
-    '科幻',
-    '百合',
-    'TV',
-    '日本',
-    '原创',
-    '意识流',
-    '实验动画',
-    '1998',
-    '赛博朋克',
-    'Lain',
-    '安倍吉俊',
-    '内涵',
-    '中村隆太郎',
-    ' 庵野秀明',
-    '八成也看不懂',
-    ' 小中千昭, 内涵系, 电波',
-    '年代',
-    '神作',
-    'SF',
-    '1998年',
-  ];
-  final double _score = 7.8;
   late Future<Detail?> _detailFuture;
 
   void _refresh() {
@@ -65,24 +48,30 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
     try {
       return SdkProxy.instance.resourceGet(rid: BigInt.from(widget.rid));
     } catch (error) {
-      _logger.severe('Failed to fetch resource: $error');
+      _logger.severe('Failed to fetch resource', error);
       return null;
     }
   }
 
-  Future<List<Tag>?> _fetchTags() async {
-    return <Tag>[];
+  Future<MetadataNode?> _fetchMetadata() async {
+    try {
+      return SdkProxy.instance.metadataQuery(
+        rootNode: BigInt.from(widget.rid),
+        depth: BigInt.from(4),
+      );
+    } catch (error) {
+      _logger.severe('Failed to fetch metadata', error);
+      return null;
+    }
   }
 
   Future<Detail?> _fetchDetail() async {
     final resource = await _fetchResource();
-    final tag = await _fetchTags();
-
-    if (resource != null && tag != null) {
-      return (tag, resource);
-    } else {
-      return null;
+    final metadata = await _fetchMetadata();
+    if (resource != null && metadata != null) {
+      return (resource: resource, metadata: metadata);
     }
+    return null;
   }
 
   @override
@@ -91,28 +80,55 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
     _detailFuture = _fetchDetail();
   }
 
-  Widget _buildTagList() {
+  @override
+  Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Wrap(
-      spacing: 8.0,
-      runSpacing: 4.0,
-      children: _tags
-          .map(
-            (tag) => ActionChip(
-              label: Text(tag),
-              backgroundColor: colorScheme.surfaceContainerHighest,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              onPressed: null,
-            ),
-          )
-          .toList(),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: null,
+          label: Text(AppLocalizations.of(context)!.playNow),
+          icon: const Icon(Icons.play_arrow),
+          backgroundColor: colorScheme.primaryContainer,
+          foregroundColor: colorScheme.onPrimaryContainer,
+        ),
+        body: FutureBuilder(
+          future: _detailFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return _buildContent(isLoading: true, data: _dumpyData);
+            }
+            if (snapshot.hasError || snapshot.data == null) {
+              return ErrorBlock(
+                message: snapshot.hasError
+                    ? '${snapshot.error}'
+                    : 'Resource not found',
+                onRetry: _refresh,
+              );
+            }
+            return _buildContent(isLoading: false, data: snapshot.data!);
+          },
+        ),
+      ),
     );
   }
 
   Widget _buildContent({required bool isLoading, required Detail data}) {
-    final (tags, resource) = data;
+    final resource = data.resource;
+    final metadata = data.metadata;
+    final extend = metadata.extend;
+    final coverFuture = coverUrl(metadata.coverFileMapId);
+    var rating = extendValue(extend, 'rating');
+    if (rating.isEmpty) rating = extendValue(extend, 'score');
+    final platform = extendValue(extend, 'platform');
+    final eps = extendValue(extend, 'eps');
+    final startDate = extendValue(extend, 'start_date');
+    final title = titleFromJson(extendValue(extend, 'titles'));
+    final displayTitle = title.isNotEmpty
+        ? title
+        : (resource.name ?? 'Unknown name');
+
     return Skeletonizer(
       enabled: isLoading,
       child: CustomScrollView(
@@ -176,7 +192,7 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
                             AnimatedOpacity(
                               duration: const Duration(milliseconds: 200),
                               opacity: isCollapsed ? 0 : 1,
-                              child: _buildPoster(resource),
+                              child: _buildPoster(coverFuture),
                             ),
                             const SizedBox(width: 15),
                             Expanded(
@@ -193,14 +209,15 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
                                         context,
                                       ).colorScheme.onSurface,
                                     ),
-                                    child: Text(resource.name ?? "Unkown name"),
+                                    child: Text(displayTitle),
                                   ),
                                   if (!isCollapsed) ...[
                                     const SizedBox(height: 8),
-                                    _buildScoreBadge(),
+                                    if (rating.isNotEmpty)
+                                      _buildScoreBadge(rating),
                                     const SizedBox(height: 8),
                                     Text(
-                                      "13集全 / 意识流经典",
+                                      _subtitle(platform, eps, startDate),
                                       style: TextStyle(
                                         color: Theme.of(
                                           context,
@@ -224,12 +241,11 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
               tabAlignment: TabAlignment.center,
               isScrollable: false,
               indicatorSize: TabBarIndicatorSize.label,
-              dividerColor: Colors
-                  .transparent, // Colors.transparent is safe—no branding needed
+              dividerColor: Theme.of(context).colorScheme.outline.withAlpha(0),
               tabs: [
                 Tab(text: AppLocalizations.of(context)!.introduction),
                 Tab(text: AppLocalizations.of(context)!.episodes),
-                Tab(text: AppLocalizations.of(context)!.reviews),
+                Tab(text: AppLocalizations.of(context)!.castTab),
               ],
             ),
           ),
@@ -237,11 +253,9 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
             hasScrollBody: true,
             child: TabBarView(
               children: [
-                _buildIntroTab(resource),
-                Center(child: Text(AppLocalizations.of(context)!.episodeList)),
-                Center(
-                  child: Text(AppLocalizations.of(context)!.reviewSection),
-                ),
+                IntroTab(metadata: metadata),
+                EpisodesTab(metadata: metadata),
+                CastTab(metadata: metadata),
               ],
             ),
           ),
@@ -250,41 +264,16 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: null,
-          label: Text(AppLocalizations.of(context)!.playNow),
-          icon: const Icon(Icons.play_arrow),
-          backgroundColor: colorScheme.primaryContainer,
-          foregroundColor: colorScheme.onPrimaryContainer,
-        ),
-        body: FutureBuilder(
-          future: _detailFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return _buildContent(isLoading: true, data: _dumpyData);
-            }
-            if (snapshot.hasError || snapshot.data == null) {
-              return ErrorBlock(
-                message: snapshot.hasError
-                    ? '${snapshot.error}'
-                    : 'Resource not found',
-                onRetry: _refresh,
-              );
-            }
-            return _buildContent(isLoading: false, data: snapshot.data!);
-          },
-        ),
-      ),
-    );
+  String _subtitle(String platform, String eps, String startDate) {
+    final parts = <String>[
+      if (platform.isNotEmpty) platform,
+      if (eps.isNotEmpty) '$eps集',
+      if (startDate.isNotEmpty) startDate,
+    ];
+    return parts.isEmpty ? '' : parts.join(' / ');
   }
 
-  Widget _buildPoster(Resource resource) {
+  Widget _buildPoster(Future<String?> coverUrl) {
     return Container(
       height: 160,
       decoration: BoxDecoration(
@@ -300,13 +289,24 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
         aspectRatio: 3 / 4,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Container(color: Colors.grey[900]),
+          child: FutureBuilder<String?>(
+            future: coverUrl,
+            builder: (context, snapshot) {
+              final url = snapshot.hasData ? snapshot.data : null;
+              if (url == null) {
+                return Container(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                );
+              }
+              return SdkProxy.instance.authImage(url, context: context);
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildScoreBadge() {
+  Widget _buildScoreBadge(String score) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
@@ -314,7 +314,7 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        "Score $_score",
+        'Score $score',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onPrimary,
           fontWeight: FontWeight.bold,
@@ -323,45 +323,26 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
       ),
     );
   }
+}
 
-  Widget _buildIntroTab(Resource resource) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.plotSummary,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            "",
-            style: TextStyle(
-              fontSize: 15,
-              height: 1.6,
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
-          const SizedBox(height: 25),
-          Text(
-            AppLocalizations.of(context)!.coreTags,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
-            ),
-          ),
-          const SizedBox(height: 10),
-          _buildTagList(),
-          const SizedBox(height: 100),
-        ],
-      ),
-    );
-  }
+MetadataNode _emptyMetadata() {
+  return MetadataNode(
+    lid: BigInt.zero,
+    rid: BigInt.zero,
+    fileSize: BigInt.zero,
+    fileCnt: BigInt.zero,
+    name: "",
+    aliasName: const [],
+    originName: "",
+    description: "",
+    flags: 0,
+    metadataType: MetadataType.virtual,
+    origin: "",
+    dataFileMapId: null,
+    coverFileMapId: null,
+    subMetadatas: const [],
+    url: "",
+    checksum: "",
+    extend: const {},
+  );
 }

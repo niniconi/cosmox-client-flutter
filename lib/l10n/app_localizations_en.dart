@@ -282,6 +282,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coreTags => 'Core Tags';
 
   @override
+  String get castTab => 'Cast';
+
+  @override
+  String get staffTab => 'Staff';
+
+  @override
+  String get season => 'Season';
+
+  @override
+  String get voiceActors => 'Voice Actors';
+
+  @override
   String get invalidUsername => 'Invalid username';
 
   @override
