@@ -10,7 +10,7 @@ class LibraryViewPage extends StatefulWidget {
   const LibraryViewPage({super.key, required this.lid});
   final int lid;
   @override
-  State<StatefulWidget> createState() => _LibraryViewerPageState();
+  State<LibraryViewPage> createState() => _LibraryViewerPageState();
 }
 
 class _LibraryViewerPageState extends State<LibraryViewPage> {

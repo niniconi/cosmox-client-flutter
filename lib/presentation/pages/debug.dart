@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class DebugPage extends StatefulWidget {
   const DebugPage({super.key});
   @override
-  State<StatefulWidget> createState() => _RouterPageSate();
+  State<DebugPage> createState() => _RouterPageSate();
 }
 
 class _RouterPageSate extends State<DebugPage> {

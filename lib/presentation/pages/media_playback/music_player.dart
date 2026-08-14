@@ -5,7 +5,7 @@ class MusicPlayerPage extends StatefulWidget {
   const MusicPlayerPage({super.key, required this.musicUrl});
   final String musicUrl;
   @override
-  State<StatefulWidget> createState() => _MusicPlayerPageState();
+  State<MusicPlayerPage> createState() => _MusicPlayerPageState();
 }
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class NovelReaderPage extends StatefulWidget {
   const NovelReaderPage({super.key});
   @override
-  State<StatefulWidget> createState() => _NovelReaderPageState();
+  State<NovelReaderPage> createState() => _NovelReaderPageState();
 }
 
 class _NovelReaderPageState extends State<NovelReaderPage> {

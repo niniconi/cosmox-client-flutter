@@ -5,7 +5,7 @@ class ContainerInfoComponent extends StatefulWidget {
   const ContainerInfoComponent({super.key, required this.data});
   final Map data;
   @override
-  State<StatefulWidget> createState() => _ContainerInfoComponentState();
+  State<ContainerInfoComponent> createState() => _ContainerInfoComponentState();
 }
 
 class _ContainerInfoComponentState extends State<ContainerInfoComponent> {

@@ -7,7 +7,7 @@ import 'package:cosmox_client/presentation/widgets/under_construction.dart';
 class EditUserPage extends StatefulWidget {
   const EditUserPage({super.key});
   @override
-  State<StatefulWidget> createState() => _EditUserPageState();
+  State<EditUserPage> createState() => _EditUserPageState();
 }
 
 class _EditUserPageState extends State<EditUserPage> {

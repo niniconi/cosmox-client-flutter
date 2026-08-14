@@ -10,7 +10,7 @@ import 'package:cosmox_client/l10n/app_localizations.dart';
 class ComicsPlayerPage extends StatefulWidget {
   const ComicsPlayerPage({super.key});
   @override
-  State<StatefulWidget> createState() => _ComicsPlayerPageState();
+  State<ComicsPlayerPage> createState() => _ComicsPlayerPageState();
 }
 
 enum ScrollType { default_, upToDown, rightToLeft, leftToRight }
@@ -303,7 +303,7 @@ class ComicsSettingModalBottomSheet extends StatefulWidget {
   final Function(ScrollType scrollType) scrollTypeSwitch;
   final Function(Color backgroundColor) backgroundColorSwitch;
   @override
-  State<StatefulWidget> createState() => _ComicsSettingModalBottomSheetState();
+  State<ComicsSettingModalBottomSheet> createState() => _ComicsSettingModalBottomSheetState();
 }
 
 class _ComicsSettingModalBottomSheetState
@@ -508,7 +508,7 @@ class ComicsViewModalBottomSheet extends StatefulWidget {
   final Function(int) getUrl;
   final Function(int) onPageTap;
   @override
-  State<StatefulWidget> createState() => _ComicsViewsModalBottomSheetState();
+  State<ComicsViewModalBottomSheet> createState() => _ComicsViewsModalBottomSheetState();
 }
 
 class _ComicsViewsModalBottomSheetState

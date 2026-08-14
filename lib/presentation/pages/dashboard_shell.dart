@@ -9,7 +9,7 @@ class DashboardShellPage extends StatefulWidget {
   final Widget child;
   const DashboardShellPage({super.key, required this.child});
   @override
-  State<StatefulWidget> createState() => _DashboardShellPageState();
+  State<DashboardShellPage> createState() => _DashboardShellPageState();
 }
 
 class _DashboardShellPageState extends State<DashboardShellPage> {

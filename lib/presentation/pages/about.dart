@@ -15,7 +15,7 @@ import 'package:cosmox_client/src/rust/api/cosmox.dart';
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
   @override
-  State<StatefulWidget> createState() => _AboutPageState();
+  State<AboutPage> createState() => _AboutPageState();
 }
 
 class _AboutPageState extends State<AboutPage> {

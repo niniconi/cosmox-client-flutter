@@ -4,7 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 class MarkdownReaderPage extends StatefulWidget {
   const MarkdownReaderPage({super.key});
   @override
-  State<StatefulWidget> createState() => _MarkdownReaderPageState();
+  State<MarkdownReaderPage> createState() => _MarkdownReaderPageState();
 }
 
 class _MarkdownReaderPageState extends State<MarkdownReaderPage> {

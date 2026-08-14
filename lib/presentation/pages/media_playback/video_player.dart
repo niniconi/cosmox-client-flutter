@@ -1041,7 +1041,7 @@ class MediaKitPlayerImpl extends StatefulWidget {
   const MediaKitPlayerImpl({super.key, required this.controller});
 
   @override
-  State<StatefulWidget> createState() => _MediaKitPlayerImplState();
+  State<MediaKitPlayerImpl> createState() => _MediaKitPlayerImplState();
 }
 
 class _MediaKitPlayerImplState extends State<MediaKitPlayerImpl> {
