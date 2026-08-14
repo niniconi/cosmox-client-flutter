@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cosmox_client/core/state.dart';
 import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 /// Singleton proxy around [CosmoxSdk].
@@ -60,6 +62,44 @@ class SdkProxy {
       _sync(() => _cosmox.setToken(token: token));
 
   String? getToken() => _sync(() => _cosmox.getToken());
+
+  /// Auth-aware image widget for URLs that need an `Authorization` header
+  /// (e.g. [itemPull] results). [context] provides the semantic color for the
+  /// placeholder/error box; the token comes from [getToken] and is sent as the
+  /// raw JWT (no `Bearer ` prefix), matching the SDK.
+  Widget authImage(
+    String? url, {
+    required BuildContext context,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.cover,
+  }) {
+    if (url == null) {
+      return Container(
+        width: width,
+        height: height,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      );
+    }
+    final token = getToken();
+    return CachedNetworkImage(
+      imageUrl: url,
+      width: width,
+      height: height,
+      fit: fit,
+      httpHeaders: token == null ? const {} : {'Authorization': token},
+      placeholder: (_, _) => Container(
+        width: width,
+        height: height,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      ),
+      errorWidget: (_, _, _) => Container(
+        width: width,
+        height: height,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      ),
+    );
+  }
 
   Future<SystemInfo> systemInfo() => _value(() => _cosmox.systemInfo());
 

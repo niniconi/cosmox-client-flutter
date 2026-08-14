@@ -697,7 +697,7 @@ impl CosmoxSdk {
 
     pub async fn itemPull(&self, id: u64) -> Result<String, SdkError> {
         let base_url = self.api.base_url.as_str();
-        Ok(format!("{base_url}/api/item/{id}/pull"))
+        Ok(format!("{base_url}/item/{id}/pull"))
     }
 
     #[flutter_rust_bridge::frb(sync)]
