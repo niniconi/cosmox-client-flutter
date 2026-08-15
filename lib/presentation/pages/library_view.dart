@@ -1,4 +1,5 @@
 import 'package:cosmox_client/core/global_keys.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
 import 'package:cosmox_client/presentation/widgets/page_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -19,6 +20,10 @@ class _LibraryViewerPageState extends State<LibraryViewPage> {
   int _pageCount = 1;
   int _page = 1;
   List<Resource> _resources = [];
+  final Map<BigInt, Future<String?>> _coverFutures = {};
+
+  Future<String?> _coverFor(Resource resource) =>
+      _coverFutures.putIfAbsent(resource.rid, () => coverUrl(resource.cover));
 
   void _fetchResourcesByLid() async {
     _logger.fine('fetch page $_page');
@@ -46,9 +51,6 @@ class _LibraryViewerPageState extends State<LibraryViewPage> {
   Widget _buildResourceCard(int index) {
     Resource resource = _resources[index];
     String title = resource.name ?? "Unknown name";
-    Widget coverImage = Container(
-      color: Theme.of(context).colorScheme.surfaceContainerHighest,
-    );
 
     return Column(
       children: [
@@ -64,9 +66,18 @@ class _LibraryViewerPageState extends State<LibraryViewPage> {
               width: 150,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                //image: DecorationImage(image: getCover(index), fit: BoxFit.cover),
               ),
-              child: coverImage,
+              child: FutureBuilder<String?>(
+                future: _coverFor(resource),
+                builder: (context, snapshot) {
+                  return SdkProxy.instance.authImage(
+                    snapshot.hasData ? snapshot.data : null,
+                    context: context,
+                    width: 150,
+                    height: 200,
+                  );
+                },
+              ),
             ),
           ),
         ),
