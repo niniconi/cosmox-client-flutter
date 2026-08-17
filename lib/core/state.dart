@@ -104,11 +104,13 @@ class AuthController extends ChangeNotifier {
 
   void _updateUidFromToken(String token) {
     try {
-      String claimsBase64 = token.split('.')[1];
-      claimsBase64 += '=' * (4 - (claimsBase64.length % 4));
-      List<int> bytes = base64.decode(claimsBase64);
-      final claims = jsonDecode(utf8.decode(bytes));
-      final int uid = int.parse(claims['sub']);
+      final parts = token.split('.');
+      if (parts.length < 2) return;
+      final payload = utf8.decode(
+        base64Url.decode(base64Url.normalize(parts[1])),
+      );
+      final claims = jsonDecode(payload) as Map<String, dynamic>;
+      final uid = int.parse(claims['sub']?.toString() ?? '');
       _uid = uid;
       _logger.fine('[Auth] Parsed user ID from token: $uid');
     } catch (error, st) {

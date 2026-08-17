@@ -31,9 +31,19 @@ class SdkProxy {
     }
   }
 
+  /// Persist a slide-renewed token back to the shared store so a later app
+  /// restart reuses the live token instead of a revoked one.
+  Future<void> _syncRenewedToken() async {
+    final current = getToken();
+    if (current != null && current != AuthController.instance.token) {
+      await AuthController.instance.storeToken(current);
+    }
+  }
+
   Future<void> _void(Future<void> Function() fn) async {
     try {
       await fn();
+      await _syncRenewedToken();
     } on SdkError_Unauthenticated {
       AuthController.instance.triggerSessionExpired();
       rethrow;
@@ -45,7 +55,9 @@ class SdkProxy {
 
   Future<T> _value<T>(Future<T> Function() fn) async {
     try {
-      return await fn();
+      final result = await fn();
+      await _syncRenewedToken();
+      return result;
     } on SdkError_Unauthenticated {
       AuthController.instance.triggerSessionExpired();
       rethrow;
@@ -65,8 +77,8 @@ class SdkProxy {
 
   /// Auth-aware image widget for URLs that need an `Authorization` header
   /// (e.g. [itemPull] results). [context] provides the semantic color for the
-  /// placeholder/error box; the token comes from [getToken] and is sent as the
-  /// raw JWT (no `Bearer ` prefix), matching the SDK.
+  /// placeholder/error box; the token comes from [getToken] and is sent as an
+  /// `Bearer <jwt>` header, matching the SDK's preferred auth scheme.
   Widget authImage(
     String? url, {
     required BuildContext context,
@@ -87,7 +99,7 @@ class SdkProxy {
       width: width,
       height: height,
       fit: fit,
-      httpHeaders: token == null ? const {} : {'Authorization': token},
+      httpHeaders: token == null ? const {} : {'Authorization': 'Bearer $token'},
       placeholder: (_, _) => Container(
         width: width,
         height: height,
