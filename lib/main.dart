@@ -38,6 +38,7 @@ import 'package:cosmox_client/presentation/pages/user/setting_subtitle.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_playback.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_profile.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_account.dart';
+import 'package:cosmox_client/presentation/pages/user/setting_sessions.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_notifications.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_preferences.dart';
 import 'package:cosmox_client/presentation/pages/user/setting_danger.dart';
@@ -138,6 +139,13 @@ final routes = [
         path: 'account',
         pageBuilder: (context, state) => slideRightPage(
           const AccountSettingPage(title: 'account setting'),
+          state.pageKey,
+        ),
+      ),
+      GoRoute(
+        path: 'sessions',
+        pageBuilder: (context, state) => slideRightPage(
+          const DeviceSessionSettingPage(title: 'sessions setting'),
           state.pageKey,
         ),
       ),

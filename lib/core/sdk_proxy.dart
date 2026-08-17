@@ -143,6 +143,26 @@ class SdkProxy {
 
   Future<User> userSelf() => _value(() => _cosmox.userSelf());
 
+  Future<List<DeviceSession>> userQueryDevices({
+    BigInt? uid,
+    String? sort,
+    BigInt? page,
+    BigInt? pageSize,
+  }) => _value(
+    () => _cosmox.userQueryDevices(
+      uid: uid,
+      sort: sort,
+      page: page,
+      pageSize: pageSize ?? BigInt.from(40),
+    ),
+  );
+
+  Future<void> logoutDevice({required BigInt did}) =>
+      _void(() => _cosmox.logoutDevice(did: did));
+
+  Future<void> logoutUser({required BigInt uid}) =>
+      _void(() => _cosmox.logoutUser(uid: uid));
+
   Future<UserResp> userRegister({
     required String username,
     required String password,

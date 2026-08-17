@@ -1220,6 +1220,42 @@ abstract class AppLocalizations {
   /// **'Active Sessions'**
   String get activeSessions;
 
+  /// No description provided for @logOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logOut;
+
+  /// No description provided for @logoutAllDevices.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out All Devices'**
+  String get logoutAllDevices;
+
+  /// No description provided for @logoutCurrentDeviceWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This device belongs to the account you are currently signed in with. Signing it out may end your current session.'**
+  String get logoutCurrentDeviceWarning;
+
+  /// No description provided for @lastLoginAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last login'**
+  String get lastLoginAt;
+
+  /// No description provided for @userAgentDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Device'**
+  String get userAgentDevice;
+
+  /// No description provided for @noActiveSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'No active sessions'**
+  String get noActiveSessions;
+
   /// No description provided for @dangerZone.
   ///
   /// In en, this message translates to:

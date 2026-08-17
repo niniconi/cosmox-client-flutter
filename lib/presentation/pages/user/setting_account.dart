@@ -71,7 +71,7 @@ class _AccountSettingPageState extends State<AccountSettingPage> {
                   icon: Icons.devices_outlined,
                   title: loc.activeSessions,
                   subtitle: '1 active session',
-                  onTap: () {},
+                  onTap: () => context.push('/user/setting/sessions'),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(

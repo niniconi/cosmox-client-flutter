@@ -39,7 +39,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1502532472;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1320801917;
 
 // Section: executor
 
@@ -1212,6 +1212,122 @@ fn wire__crate__api__cosmox__CosmoxSdk_logout_impl(
                 })?;
                 Ok(output_ok)
             })())
+        },
+    )
+}
+fn wire__crate__api__cosmox__CosmoxSdk_logoutDevice_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "CosmoxSdk_logoutDevice",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
+            >>::sse_decode(&mut deserializer);
+            let api_did = <u64>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::cosmox::SdkError>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::cosmox::CosmoxSdk::logoutDevice(&*api_that_guard, api_did)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__cosmox__CosmoxSdk_logoutUser_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "CosmoxSdk_logoutUser",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
+            >>::sse_decode(&mut deserializer);
+            let api_uid = <u64>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::cosmox::SdkError>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok =
+                            crate::api::cosmox::CosmoxSdk::logoutUser(&*api_that_guard, api_uid)
+                                .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
         },
     )
 }
@@ -3622,6 +3738,72 @@ fn wire__crate__api__cosmox__CosmoxSdk_userQuery_impl(
         },
     )
 }
+fn wire__crate__api__cosmox__CosmoxSdk_userQueryDevices_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "CosmoxSdk_userQueryDevices",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>,
+            >>::sse_decode(&mut deserializer);
+            let api_uid = <Option<u64>>::sse_decode(&mut deserializer);
+            let api_sort = <Option<String>>::sse_decode(&mut deserializer);
+            let api_page = <Option<u64>>::sse_decode(&mut deserializer);
+            let api_pageSize = <u64>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, crate::api::cosmox::SdkError>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::cosmox::CosmoxSdk::userQueryDevices(
+                            &*api_that_guard,
+                            api_uid,
+                            api_sort,
+                            api_page,
+                            api_pageSize,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
 fn wire__crate__api__cosmox__CosmoxSdk_userRegister_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -3974,6 +4156,14 @@ fn wire__crate__api__cosmox__init_app_impl(
 #[allow(clippy::unnecessary_literal_unwrap)]
 const _: fn() = || {
     {
+        let DeviceSession = None::<crate::api::cosmox::DeviceSession>.unwrap();
+        let _: u64 = DeviceSession.did;
+        let _: Option<u64> = DeviceSession.uid;
+        let _: Option<String> = DeviceSession.user_agent;
+        let _: chrono::NaiveDateTime = DeviceSession.last_login_datetime;
+        let _: String = DeviceSession.last_login_ip;
+    }
+    {
         let InitStatus = None::<crate::api::cosmox::InitStatus>.unwrap();
         let _: bool = InitStatus.initialized;
     }
@@ -4188,6 +4378,24 @@ impl SseDecode for bool {
     }
 }
 
+impl SseDecode for crate::api::cosmox::DeviceSession {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_did = <u64>::sse_decode(deserializer);
+        let mut var_uid = <Option<u64>>::sse_decode(deserializer);
+        let mut var_userAgent = <Option<String>>::sse_decode(deserializer);
+        let mut var_lastLoginDatetime = <chrono::NaiveDateTime>::sse_decode(deserializer);
+        let mut var_lastLoginIp = <String>::sse_decode(deserializer);
+        return crate::api::cosmox::DeviceSession {
+            did: var_did,
+            uid: var_uid,
+            user_agent: var_userAgent,
+            last_login_datetime: var_lastLoginDatetime,
+            last_login_ip: var_lastLoginIp,
+        };
+    }
+}
+
 impl SseDecode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -4283,6 +4491,20 @@ impl SseDecode for Vec<String> {
         let mut ans_ = Vec::with_capacity(len_ as usize);
         for idx_ in 0..len_ {
             ans_.push(<String>::sse_decode(deserializer));
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<crate::api::cosmox::DeviceSession> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<crate::api::cosmox::DeviceSession>::sse_decode(
+                deserializer,
+            ));
         }
         return ans_;
     }
@@ -4999,174 +5221,186 @@ fn pde_ffi_dispatcher_primary_impl(
         }
         19 => wire__crate__api__cosmox__CosmoxSdk_login_impl(port, ptr, rust_vec_len, data_len),
         21 => {
+            wire__crate__api__cosmox__CosmoxSdk_logoutDevice_impl(port, ptr, rust_vec_len, data_len)
+        }
+        22 => {
+            wire__crate__api__cosmox__CosmoxSdk_logoutUser_impl(port, ptr, rust_vec_len, data_len)
+        }
+        23 => {
             wire__crate__api__cosmox__CosmoxSdk_metadataGet_impl(port, ptr, rust_vec_len, data_len)
         }
-        22 => wire__crate__api__cosmox__CosmoxSdk_metadataQuery_impl(
+        24 => wire__crate__api__cosmox__CosmoxSdk_metadataQuery_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        24 => wire__crate__api__cosmox__CosmoxSdk_openapi_impl(port, ptr, rust_vec_len, data_len),
-        25 => {
+        26 => wire__crate__api__cosmox__CosmoxSdk_openapi_impl(port, ptr, rust_vec_len, data_len),
+        27 => {
             wire__crate__api__cosmox__CosmoxSdk_pathSubPath_impl(port, ptr, rust_vec_len, data_len)
         }
-        26 => wire__crate__api__cosmox__CosmoxSdk_pluginDisable_impl(
+        28 => wire__crate__api__cosmox__CosmoxSdk_pluginDisable_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        27 => {
+        29 => {
             wire__crate__api__cosmox__CosmoxSdk_pluginEnable_impl(port, ptr, rust_vec_len, data_len)
         }
-        28 => {
+        30 => {
             wire__crate__api__cosmox__CosmoxSdk_pluginInfo_impl(port, ptr, rust_vec_len, data_len)
         }
-        29 => wire__crate__api__cosmox__CosmoxSdk_pluginInstall_impl(
-            port,
-            ptr,
-            rust_vec_len,
-            data_len,
-        ),
-        30 => {
-            wire__crate__api__cosmox__CosmoxSdk_pluginQuery_impl(port, ptr, rust_vec_len, data_len)
-        }
-        31 => wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
+        31 => wire__crate__api__cosmox__CosmoxSdk_pluginInstall_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
         32 => {
+            wire__crate__api__cosmox__CosmoxSdk_pluginQuery_impl(port, ptr, rust_vec_len, data_len)
+        }
+        33 => wire__crate__api__cosmox__CosmoxSdk_pluginUninstall_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        34 => {
             wire__crate__api__cosmox__CosmoxSdk_resourceAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        33 => wire__crate__api__cosmox__CosmoxSdk_resourceAddTag_impl(
+        35 => wire__crate__api__cosmox__CosmoxSdk_resourceAddTag_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        34 => wire__crate__api__cosmox__CosmoxSdk_resourceDelete_impl(
+        36 => wire__crate__api__cosmox__CosmoxSdk_resourceDelete_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        35 => {
+        37 => {
             wire__crate__api__cosmox__CosmoxSdk_resourceGet_impl(port, ptr, rust_vec_len, data_len)
         }
-        36 => wire__crate__api__cosmox__CosmoxSdk_resourceGetMetadata_impl(
+        38 => wire__crate__api__cosmox__CosmoxSdk_resourceGetMetadata_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        37 => wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
+        39 => wire__crate__api__cosmox__CosmoxSdk_resourceQuery_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        38 => wire__crate__api__cosmox__CosmoxSdk_scannerAddTask_impl(
+        40 => wire__crate__api__cosmox__CosmoxSdk_scannerAddTask_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        39 => {
+        41 => {
             wire__crate__api__cosmox__CosmoxSdk_scannerInfo_impl(port, ptr, rust_vec_len, data_len)
         }
-        40 => {
+        42 => {
             wire__crate__api__cosmox__CosmoxSdk_scannerScan_impl(port, ptr, rust_vec_len, data_len)
         }
-        41 => wire__crate__api__cosmox__CosmoxSdk_scannerScanAll_impl(
+        43 => wire__crate__api__cosmox__CosmoxSdk_scannerScanAll_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        42 => wire__crate__api__cosmox__CosmoxSdk_scannerStatus_impl(
+        44 => wire__crate__api__cosmox__CosmoxSdk_scannerStatus_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        43 => wire__crate__api__cosmox__CosmoxSdk_search_impl(port, ptr, rust_vec_len, data_len),
-        46 => {
+        45 => wire__crate__api__cosmox__CosmoxSdk_search_impl(port, ptr, rust_vec_len, data_len),
+        48 => {
             wire__crate__api__cosmox__CosmoxSdk_systemAbout_impl(port, ptr, rust_vec_len, data_len)
         }
-        47 => wire__crate__api__cosmox__CosmoxSdk_systemDeleteAll_impl(
+        49 => wire__crate__api__cosmox__CosmoxSdk_systemDeleteAll_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        48 => {
+        50 => {
             wire__crate__api__cosmox__CosmoxSdk_systemInfo_impl(port, ptr, rust_vec_len, data_len)
         }
-        49 => wire__crate__api__cosmox__CosmoxSdk_systemLog_impl(port, ptr, rust_vec_len, data_len),
-        50 => wire__crate__api__cosmox__CosmoxSdk_systemRestart_impl(
+        51 => wire__crate__api__cosmox__CosmoxSdk_systemLog_impl(port, ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__cosmox__CosmoxSdk_systemRestart_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        51 => wire__crate__api__cosmox__CosmoxSdk_systemShutdown_impl(
+        53 => wire__crate__api__cosmox__CosmoxSdk_systemShutdown_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        52 => wire__crate__api__cosmox__CosmoxSdk_tagAdd_impl(port, ptr, rust_vec_len, data_len),
-        53 => {
+        54 => wire__crate__api__cosmox__CosmoxSdk_tagAdd_impl(port, ptr, rust_vec_len, data_len),
+        55 => {
             wire__crate__api__cosmox__CosmoxSdk_tagCatalog_impl(port, ptr, rust_vec_len, data_len)
         }
-        54 => wire__crate__api__cosmox__CosmoxSdk_tagGet_impl(port, ptr, rust_vec_len, data_len),
-        55 => {
+        56 => wire__crate__api__cosmox__CosmoxSdk_tagGet_impl(port, ptr, rust_vec_len, data_len),
+        57 => {
             wire__crate__api__cosmox__CosmoxSdk_tagGroupAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        56 => wire__crate__api__cosmox__CosmoxSdk_tagGroupDelete_impl(
+        58 => wire__crate__api__cosmox__CosmoxSdk_tagGroupDelete_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        57 => {
+        59 => {
             wire__crate__api__cosmox__CosmoxSdk_tagGroupGet_impl(port, ptr, rust_vec_len, data_len)
         }
-        58 => wire__crate__api__cosmox__CosmoxSdk_tagGroupQuery_impl(
+        60 => wire__crate__api__cosmox__CosmoxSdk_tagGroupQuery_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        59 => wire__crate__api__cosmox__CosmoxSdk_tagQuery_impl(port, ptr, rust_vec_len, data_len),
-        60 => {
+        61 => wire__crate__api__cosmox__CosmoxSdk_tagQuery_impl(port, ptr, rust_vec_len, data_len),
+        62 => {
             wire__crate__api__cosmox__CosmoxSdk_userDelete_impl(port, ptr, rust_vec_len, data_len)
         }
-        61 => wire__crate__api__cosmox__CosmoxSdk_userGet_impl(port, ptr, rust_vec_len, data_len),
-        62 => wire__crate__api__cosmox__CosmoxSdk_userQuery_impl(port, ptr, rust_vec_len, data_len),
-        63 => {
+        63 => wire__crate__api__cosmox__CosmoxSdk_userGet_impl(port, ptr, rust_vec_len, data_len),
+        64 => wire__crate__api__cosmox__CosmoxSdk_userQuery_impl(port, ptr, rust_vec_len, data_len),
+        65 => wire__crate__api__cosmox__CosmoxSdk_userQueryDevices_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        66 => {
             wire__crate__api__cosmox__CosmoxSdk_userRegister_impl(port, ptr, rust_vec_len, data_len)
         }
-        64 => wire__crate__api__cosmox__CosmoxSdk_userRegisterWithProfile_impl(
+        67 => wire__crate__api__cosmox__CosmoxSdk_userRegisterWithProfile_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        65 => {
+        68 => {
             wire__crate__api__cosmox__CosmoxSdk_userRoleAdd_impl(port, ptr, rust_vec_len, data_len)
         }
-        66 => wire__crate__api__cosmox__CosmoxSdk_userSelf_impl(port, ptr, rust_vec_len, data_len),
-        67 => wire__crate__api__cosmox__CosmoxSdk_userUploadAvatar_impl(
+        69 => wire__crate__api__cosmox__CosmoxSdk_userSelf_impl(port, ptr, rust_vec_len, data_len),
+        70 => wire__crate__api__cosmox__CosmoxSdk_userUploadAvatar_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        68 => wire__crate__api__cosmox__init_app_impl(port, ptr, rust_vec_len, data_len),
+        71 => wire__crate__api__cosmox__init_app_impl(port, ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5181,9 +5415,9 @@ fn pde_ffi_dispatcher_sync_impl(
     match func_id {
         9 => wire__crate__api__cosmox__CosmoxSdk_getToken_impl(ptr, rust_vec_len, data_len),
         20 => wire__crate__api__cosmox__CosmoxSdk_logout_impl(ptr, rust_vec_len, data_len),
-        23 => wire__crate__api__cosmox__CosmoxSdk_new_impl(ptr, rust_vec_len, data_len),
-        44 => wire__crate__api__cosmox__CosmoxSdk_setToken_impl(ptr, rust_vec_len, data_len),
-        45 => wire__crate__api__cosmox__CosmoxSdk_staticItem_impl(ptr, rust_vec_len, data_len),
+        25 => wire__crate__api__cosmox__CosmoxSdk_new_impl(ptr, rust_vec_len, data_len),
+        46 => wire__crate__api__cosmox__CosmoxSdk_setToken_impl(ptr, rust_vec_len, data_len),
+        47 => wire__crate__api__cosmox__CosmoxSdk_staticItem_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -5205,6 +5439,30 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<CosmoxSdk>> for CosmoxSdk {
     }
 }
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::DeviceSession> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.0.did.into_into_dart().into_dart(),
+            self.0.uid.into_into_dart().into_dart(),
+            self.0.user_agent.into_into_dart().into_dart(),
+            self.0.last_login_datetime.into_into_dart().into_dart(),
+            self.0.last_login_ip.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for FrbWrapper<crate::api::cosmox::DeviceSession>
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<crate::api::cosmox::DeviceSession>>
+    for crate::api::cosmox::DeviceSession
+{
+    fn into_into_dart(self) -> FrbWrapper<crate::api::cosmox::DeviceSession> {
+        self.into()
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for FrbWrapper<crate::api::cosmox::InitStatus> {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -5791,6 +6049,17 @@ impl SseEncode for bool {
     }
 }
 
+impl SseEncode for crate::api::cosmox::DeviceSession {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <u64>::sse_encode(self.did, serializer);
+        <Option<u64>>::sse_encode(self.uid, serializer);
+        <Option<String>>::sse_encode(self.user_agent, serializer);
+        <chrono::NaiveDateTime>::sse_encode(self.last_login_datetime, serializer);
+        <String>::sse_encode(self.last_login_ip, serializer);
+    }
+}
+
 impl SseEncode for i32 {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5858,6 +6127,16 @@ impl SseEncode for Vec<String> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <String>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<crate::api::cosmox::DeviceSession> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::cosmox::DeviceSession>::sse_encode(item, serializer);
         }
     }
 }

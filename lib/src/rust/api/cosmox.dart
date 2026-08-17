@@ -8,6 +8,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'cosmox.freezed.dart';
 
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `DeviceQueryRequest`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`, `from`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<CosmoxSdk>>
@@ -67,6 +68,10 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
   Future<String?> login({required String username, required String password});
 
   void logout();
+
+  Future<void> logoutDevice({required BigInt did});
+
+  Future<void> logoutUser({required BigInt uid});
 
   Future<MetadataNode> metadataGet({required BigInt mid});
 
@@ -171,6 +176,13 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
 
   Future<List<User>> userQuery();
 
+  Future<List<DeviceSession>> userQueryDevices({
+    BigInt? uid,
+    String? sort,
+    BigInt? page,
+    required BigInt pageSize,
+  });
+
   Future<UserResp> userRegister({
     required String username,
     required String password,
@@ -193,6 +205,41 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
     required BigInt uid,
     required List<int> data,
   });
+}
+
+class DeviceSession {
+  final BigInt did;
+  final BigInt? uid;
+  final String? userAgent;
+  final DateTime lastLoginDatetime;
+  final String lastLoginIp;
+
+  const DeviceSession({
+    required this.did,
+    this.uid,
+    this.userAgent,
+    required this.lastLoginDatetime,
+    required this.lastLoginIp,
+  });
+
+  @override
+  int get hashCode =>
+      did.hashCode ^
+      uid.hashCode ^
+      userAgent.hashCode ^
+      lastLoginDatetime.hashCode ^
+      lastLoginIp.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DeviceSession &&
+          runtimeType == other.runtimeType &&
+          did == other.did &&
+          uid == other.uid &&
+          userAgent == other.userAgent &&
+          lastLoginDatetime == other.lastLoginDatetime &&
+          lastLoginIp == other.lastLoginIp;
 }
 
 class InitStatus {

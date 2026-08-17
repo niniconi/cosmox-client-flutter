@@ -577,6 +577,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activeSessions => 'Active Sessions';
 
   @override
+  String get logOut => 'Log Out';
+
+  @override
+  String get logoutAllDevices => 'Sign Out All Devices';
+
+  @override
+  String get logoutCurrentDeviceWarning =>
+      'This device belongs to the account you are currently signed in with. Signing it out may end your current session.';
+
+  @override
+  String get lastLoginAt => 'Last login';
+
+  @override
+  String get userAgentDevice => 'Device';
+
+  @override
+  String get noActiveSessions => 'No active sessions';
+
+  @override
   String get dangerZone => 'Danger Zone';
 
   @override

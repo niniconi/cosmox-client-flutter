@@ -570,6 +570,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get activeSessions => '活跃会话';
 
   @override
+  String get logOut => '退出登录';
+
+  @override
+  String get logoutAllDevices => '退出所有设备';
+
+  @override
+  String get logoutCurrentDeviceWarning => '该设备属于您当前登录的账户，强制退出可能会使您当前的会话失效。';
+
+  @override
+  String get lastLoginAt => '最后登录';
+
+  @override
+  String get userAgentDevice => '设备';
+
+  @override
+  String get noActiveSessions => '暂无活跃会话';
+
+  @override
   String get dangerZone => '危险操作';
 
   @override

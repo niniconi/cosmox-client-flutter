@@ -1,9 +1,9 @@
 pub use cosmox_sdk::types::{
-    InitStatus, LibrariesRelatedTags, Library, LibraryPath, LibraryQueryRequest, LibraryType,
-    Metadata, MetadataType, Permission, PluginQueryItem, PushResponse, Resource,
-    ResourceQueryRequest, Role, ScannerInfo, ScannerStatus, SearchRequest, SystemInfo, Tag,
-    TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent, UserQueryRequest,
-    UserResp,
+    DeviceQueryRequest, DeviceSession, InitStatus, LibrariesRelatedTags, Library, LibraryPath,
+    LibraryQueryRequest, LibraryType, Metadata, MetadataType, Permission, PluginQueryItem,
+    PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo, ScannerStatus, SearchRequest,
+    SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent,
+    UserQueryRequest, UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
 use reqwest::Url;
@@ -126,6 +126,23 @@ pub struct _InitStatus {
 pub struct _PushResponse {
     pub pmid: u64,
     pub uploaded_size: u64,
+}
+
+#[flutter_rust_bridge::frb(mirror(DeviceSession))]
+pub struct _DeviceSession {
+    pub did: u64,
+    pub uid: Option<u64>,
+    pub user_agent: Option<String>,
+    pub last_login_datetime: chrono::NaiveDateTime,
+    pub last_login_ip: String,
+}
+
+#[flutter_rust_bridge::frb(mirror(DeviceQueryRequest))]
+pub struct _DeviceQueryRequest {
+    pub uid: Option<u64>,
+    pub sort: Option<String>,
+    pub page: Option<u64>,
+    pub page_size: u64,
 }
 
 #[flutter_rust_bridge::frb(mirror(PluginQueryItem))]
@@ -370,6 +387,31 @@ impl CosmoxSdk {
                 email: None,
             })
             .await
+    }
+
+    pub async fn userQueryDevices(
+        &self,
+        uid: Option<u64>,
+        sort: Option<String>,
+        page: Option<u64>,
+        pageSize: u64,
+    ) -> Result<Vec<DeviceSession>, SdkError> {
+        self.api
+            .user_query_devices(DeviceQueryRequest {
+                uid,
+                sort,
+                page,
+                page_size: pageSize,
+            })
+            .await
+    }
+
+    pub async fn logoutDevice(&self, did: u64) -> Result<(), SdkError> {
+        self.api.logout_device(did).await
+    }
+
+    pub async fn logoutUser(&self, uid: u64) -> Result<(), SdkError> {
+        self.api.logout_user(uid).await
     }
 
     pub async fn userRegisterWithProfile(
