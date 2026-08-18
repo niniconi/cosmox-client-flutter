@@ -16,6 +16,30 @@ enum MuteState { mute, unmute }
 
 enum WindowState { fullscreen, window }
 
+/// One playable item fed to the video player: a display title plus the media
+/// URL (the request is authenticated via the bearer token).
+class PlaybackItem {
+  final String title;
+  final String url;
+
+  const PlaybackItem({required this.title, required this.url});
+}
+
+/// Payload carried through the router (via `state.extra`) when opening the
+/// player: the ordered episode list, the bearer token used to authenticate the
+/// media requests, and the list index to start playback at.
+class VideoPlaybackPayload {
+  final List<PlaybackItem> items;
+  final String? token;
+  final int startIndex;
+
+  const VideoPlaybackPayload({
+    required this.items,
+    this.token,
+    this.startIndex = 0,
+  });
+}
+
 class Episode {
   final int id;
   final String title;
@@ -31,8 +55,15 @@ class Episode {
 }
 
 class VideoPlayerPage extends StatefulWidget {
-  final String url;
-  const VideoPlayerPage({super.key, required this.url});
+  final List<PlaybackItem> items;
+  final String? token;
+  final int startIndex;
+  const VideoPlayerPage({
+    super.key,
+    required this.items,
+    this.token,
+    this.startIndex = 0,
+  });
 
   @override
   State<VideoPlayerPage> createState() => _VideoPlayerPageState();
@@ -61,7 +92,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   OverlayEntry? _volumeOverlay;
 
   late List<Episode> _episodes;
-  late List<String> _videoUrls;
+  late List<PlaybackItem> _items;
 
   static const List<double> _playbackSpeeds = [
     0.25,
@@ -77,7 +108,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   void initState() {
     super.initState();
-    _initEpisodes();
+    _initPlayback();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     SystemChrome.setPreferredOrientations([
@@ -88,21 +119,8 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     _startHideControlPanelTimer();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.open([
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-01-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-02-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-03-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-04-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-05-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-06-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-07-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-08-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-09-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-10-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-11-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-12-Serial-Experiments-Lain.mp4",
-        "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-13-Serial-Experiments-Lain.mp4",
-      ]);
+      controller.token = widget.token;
+      controller.open(widget.items, startIndex: widget.startIndex);
     });
   }
 
@@ -140,102 +158,19 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     }
   }
 
-  void _initEpisodes() {
-    _episodes = [
-      Episode(
-        id: 1,
-        title: "Layer 01: Weird",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: true,
-      ),
-      Episode(
-        id: 2,
-        title: "Layer 02: Girls",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: true,
-      ),
-      Episode(
-        id: 3,
-        title: "Layer 03: Psyche",
-        duration: const Duration(minutes: 24, seconds: 30),
+  void _initPlayback() {
+    _items = widget.items;
+    _episodes = List.generate(_items.length, (i) {
+      return Episode(
+        id: i + 1,
+        title: _items[i].title.isEmpty ? 'Episode ${i + 1}' : _items[i].title,
+        duration: Duration.zero,
         isWatched: false,
-      ),
-      Episode(
-        id: 4,
-        title: "Layer 04: Religion",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 5,
-        title: "Layer 05: Distortion",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 6,
-        title: "Layer 06: Kids",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 7,
-        title: "Layer 07: Society",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 8,
-        title: "Layer 08: Rumors",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 9,
-        title: "Layer 09: Protocol",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 10,
-        title: "Layer 10: Love",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 11,
-        title: "Layer 11: Infornography",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 12,
-        title: "Layer 12: Landscape",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-      Episode(
-        id: 13,
-        title: "Layer 13: Ego",
-        duration: const Duration(minutes: 24, seconds: 30),
-        isWatched: false,
-      ),
-    ];
-    _videoUrls = [
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-01-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-02-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-03-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-04-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-05-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-06-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-07-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-08-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-09-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-10-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-11-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-12-Serial-Experiments-Lain.mp4",
-      "https://archive.org/download/serial-experiments-lain-english/MP4%20%28Lowest%20Quality%29/Layer-13-Serial-Experiments-Lain.mp4",
-    ];
+      );
+    });
+    _currentEpisodeIndex = _items.isEmpty
+        ? 0
+        : widget.startIndex.clamp(0, _items.length - 1).toInt();
   }
 
   void _setVolume(double value) {
@@ -326,7 +261,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       _currentEpisodeIndex = index;
       _showEpisodePicker = false;
     });
-    controller.open(_videoUrls, startIndex: index);
+    controller.open(_items, startIndex: index);
     _logger.fine('Playing episode: ${_episodes[index].title}');
     _showControlPanel();
   }
@@ -1010,7 +945,11 @@ class VideoPlayerController {
   late VoidCallback _unmute;
   late void Function() _cast;
   late void Function(String) _setSubtitle;
-  late void Function(List<String>, int) _open;
+  late void Function(List<PlaybackItem>, int) _open;
+
+  /// Bearer token used to authenticate each media request. Set before the
+  /// first [open] (see `_VideoPlayerPageState.initState`).
+  String? token;
 
   final progress = ValueNotifier<PlayerProgress>(
     PlayerProgress(position: Duration.zero, duration: Duration.zero),
@@ -1033,7 +972,8 @@ class VideoPlayerController {
   void unmute() => _unmute();
   void cast() => _cast();
   void setSubtitle(String trackId) => _setSubtitle(trackId);
-  void open(List<String> list, {int startIndex = 0}) => _open(list, startIndex);
+  void open(List<PlaybackItem> list, {int startIndex = 0}) =>
+      _open(list, startIndex);
 }
 
 class MediaKitPlayerImpl extends StatefulWidget {
@@ -1068,9 +1008,19 @@ class _MediaKitPlayerImplState extends State<MediaKitPlayerImpl> {
     widget.controller._setSubtitle = setSubtitle;
   }
 
-  void open(List<String> list, int startIndex) {
+  void open(List<PlaybackItem> list, int startIndex) {
+    final headers = widget.controller.token == null
+        ? const <String, String>{}
+        : <String, String>{
+            'Authorization': 'Bearer ${widget.controller.token}',
+          };
     _player.open(
-      Playlist(list.map((x) => Media(x)).toList(), index: startIndex),
+      Playlist(
+        list
+            .map((item) => Media(item.url, httpHeaders: headers))
+            .toList(growable: false),
+        index: startIndex,
+      ),
     );
 
     _player.stream.duration.listen((Duration d) {

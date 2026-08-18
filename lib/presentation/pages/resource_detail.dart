@@ -7,6 +7,7 @@ import 'package:cosmox_client/presentation/pages/resource_detail/cast_tab.dart';
 import 'package:cosmox_client/presentation/pages/resource_detail/episodes_tab.dart';
 import 'package:cosmox_client/presentation/pages/resource_detail/intro_tab.dart';
 import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
+import 'package:cosmox_client/presentation/pages/resource_detail/media_playback.dart';
 import 'package:cosmox_client/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -26,6 +27,7 @@ class ResourceDetailPage extends StatefulWidget {
 
 class _ResourceDetailPageState extends State<ResourceDetailPage> {
   final Logger _logger = Logger('ResourceDetailPage');
+  MetadataNode? _loadedMetadata;
   final Detail _dumpyData = (
     resource: Resource(
       rid: BigInt.zero,
@@ -80,6 +82,12 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
     _detailFuture = _fetchDetail();
   }
 
+  void _playNow() {
+    final metadata = _loadedMetadata;
+    if (metadata == null) return;
+    openVideoPlayback(context, metadata);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -87,7 +95,7 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
       length: 3,
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: null,
+          onPressed: _playNow,
           label: Text(AppLocalizations.of(context)!.playNow),
           icon: const Icon(Icons.play_arrow),
           backgroundColor: colorScheme.primaryContainer,
@@ -117,6 +125,7 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
   Widget _buildContent({required bool isLoading, required Detail data}) {
     final resource = data.resource;
     final metadata = data.metadata;
+    _loadedMetadata = metadata;
     final extend = metadata.extend;
     final coverFuture = coverUrl(metadata.coverFileMapId);
     var rating = extendValue(extend, 'rating');
@@ -254,7 +263,11 @@ class _ResourceDetailPageState extends State<ResourceDetailPage> {
             child: TabBarView(
               children: [
                 IntroTab(metadata: metadata),
-                EpisodesTab(metadata: metadata),
+                EpisodesTab(
+                  metadata: metadata,
+                  onPlay: (root, node) =>
+                      openVideoPlayback(context, root, startAt: node),
+                ),
                 CastTab(metadata: metadata),
               ],
             ),

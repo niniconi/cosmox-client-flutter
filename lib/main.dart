@@ -321,8 +321,24 @@ final routes = [
       GoRoute(
         path: 'video/:id',
         pageBuilder: (context, state) {
+          final extra = state.extra;
+          if (extra is VideoPlaybackPayload) {
+            return fadePage(
+              VideoPlayerPage(
+                items: extra.items,
+                token: extra.token,
+                startIndex: extra.startIndex,
+              ),
+              state.pageKey,
+            );
+          }
           String id = state.pathParameters['id']!;
-          return fadePage(VideoPlayerPage(url: id), state.pageKey);
+          return fadePage(
+            VideoPlayerPage(
+              items: [PlaybackItem(title: '', url: id)],
+            ),
+            state.pageKey,
+          );
         },
       ),
       GoRoute(

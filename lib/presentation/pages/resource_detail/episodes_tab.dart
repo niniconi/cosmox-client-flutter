@@ -2,15 +2,16 @@ import 'package:cosmox_client/l10n/app_localizations.dart';
 import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
 import 'package:cosmox_client/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 
 /// The "Episodes" tab: mirrors the metadata tree as Season → Episode files.
 class EpisodesTab extends StatelessWidget {
-  const EpisodesTab({super.key, required this.metadata});
+  const EpisodesTab({super.key, required this.metadata, this.onPlay});
 
   final MetadataNode metadata;
 
-  static final Logger _logger = Logger('EpisodesTab');
+  /// Invoked with the tapped episode and its metadata root so the owner can
+  /// start playback for the whole resource beginning at that episode.
+  final void Function(MetadataNode metadata, MetadataNode episode)? onPlay;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +39,19 @@ class EpisodesTab extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 12),
       itemCount: branches.length,
-      itemBuilder: (context, index) => _SeasonTile(season: branches[index]),
+      itemBuilder: (context, index) => _SeasonTile(
+        season: branches[index],
+        onPlay: onPlay == null ? null : (ep) => onPlay!(metadata, ep),
+      ),
     );
   }
 }
 
 class _SeasonTile extends StatelessWidget {
-  const _SeasonTile({required this.season});
+  const _SeasonTile({required this.season, required this.onPlay});
 
   final MetadataNode season;
+  final void Function(MetadataNode episode)? onPlay;
 
   @override
   Widget build(BuildContext context) {
@@ -95,16 +100,17 @@ class _SeasonTile extends StatelessWidget {
               ),
             ),
           ),
-        ...episodes.map((e) => _EpisodeTile(episode: e)),
+        ...episodes.map((e) => _EpisodeTile(episode: e, onPlay: onPlay)),
       ],
     );
   }
 }
 
 class _EpisodeTile extends StatelessWidget {
-  const _EpisodeTile({required this.episode});
+  const _EpisodeTile({required this.episode, required this.onPlay});
 
   final MetadataNode episode;
+  final void Function(MetadataNode episode)? onPlay;
 
   @override
   Widget build(BuildContext context) {
@@ -129,10 +135,8 @@ class _EpisodeTile extends StatelessWidget {
               style: TextStyle(color: colorScheme.onSurfaceVariant),
             )
           : null,
-      onTap: episode.url.isNotEmpty
-          ? () {
-              EpisodesTab._logger.fine('Play episode => ${episode.url}');
-            }
+      onTap: onPlay != null && episode.dataFileMapId != null
+          ? () => onPlay!(episode)
           : null,
     );
   }
