@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class PathSelectorComponent extends StatefulWidget {
-  final Function(String path) then;
+  final ValueChanged<String> then;
   const PathSelectorComponent({super.key, required this.then});
 
   @override
@@ -17,35 +17,69 @@ class PathSelectorComponent extends StatefulWidget {
 class _PathSelectorComponentState extends State<PathSelectorComponent> {
   final Logger _logger = Logger('PathSelectorComponent');
   final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _pathController;
 
-  String parentPath = "/";
-  String currentPath = "/";
-  List<String> dirs = [];
-
-  Future<void> _updatePaths() async {
-    try {
-      final entries = await SdkProxy.instance.pathSubPath(
-        path: currentPath,
-        showHide: false,
-      );
-      setState(() {
-        dirs.clear();
-        for (var e in entries) {
-          if (currentPath.endsWith('/')) {
-            dirs.add(currentPath + e);
-          } else {
-            dirs.add('$currentPath/$e');
-          }
-        }
-      });
-    } on SdkError catch (e) {
-      _logger.warning('Path list failed: $e');
-    }
-  }
+  String _currentPath = '/';
+  List<String> _dirs = [];
+  bool _loading = false;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
+    _pathController = TextEditingController(text: _currentPath);
+    _updatePaths();
+  }
+
+  @override
+  void dispose() {
+    _pathController.dispose();
+    super.dispose();
+  }
+
+  String _parentPath(String path) {
+    if (path == '/' || path.isEmpty) return '/';
+    final trimmed = path.endsWith('/')
+        ? path.substring(0, path.length - 1)
+        : path;
+    final idx = trimmed.lastIndexOf('/');
+    if (idx <= 0) return '/';
+    return trimmed.substring(0, idx);
+  }
+
+  Future<void> _updatePaths() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final entries = await SdkProxy.instance.pathSubPath(
+        path: _currentPath,
+        showHide: false,
+      );
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        final base = _currentPath.endsWith('/')
+            ? _currentPath
+            : '$_currentPath/';
+        _dirs
+          ..clear()
+          ..addAll(entries.map((e) => '$base$e').toList()..sort());
+      });
+    } on SdkError catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _loading = false;
+        _error = 'Failed to list path';
+      });
+      _logger.warning('Path list failed: $error');
+    }
+  }
+
+  void _navigateTo(String path) {
+    _currentPath = path;
+    _pathController.text = path;
     _updatePaths();
   }
 
@@ -59,46 +93,64 @@ class _PathSelectorComponentState extends State<PathSelectorComponent> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+            children: [
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: InputFormField(
-                  labelText: "path",
-                  controller: TextEditingController(text: currentPath),
+                  labelText: 'path',
+                  controller: _pathController,
                   validator: (val) => Validate.path(val),
-                  onChanged: null,
+                  onFieldSubmitted: (_) {
+                    if (_formKey.currentState!.validate()) {
+                      _navigateTo(_pathController.text);
+                    }
+                  },
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _navigateTo(_pathController.text);
+                      }
+                    },
+                    icon: const Icon(Icons.arrow_forward),
+                  ),
                 ),
               ),
               ListTile(
-                title: currentPath == '/' ? const Text(".") : const Text("../"),
+                title: Text(_currentPath == '/' ? 'Root' : '../'),
                 onTap: () {
-                  if (currentPath != '/') {
-                    currentPath = currentPath.substring(
-                      0,
-                      currentPath.lastIndexOf('/'),
-                    );
-                    if (currentPath == '') {
-                      currentPath = '/';
-                    }
-                    _updatePaths();
+                  if (_currentPath != '/') {
+                    _navigateTo(_parentPath(_currentPath));
                   }
                 },
               ),
-              ...dirs.map(
-                (element) => ListTile(
-                  title: Text(element),
-                  onTap: () {
-                    currentPath = element;
-                    _updatePaths();
-                  },
+              if (_loading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (_error != null)
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    _error!,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                )
+              else
+                ..._dirs.map(
+                  (element) => ListTile(
+                    title: Text(element),
+                    onTap: () => _navigateTo(element),
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      widget.then(currentPath);
+                      widget.then(_pathController.text);
                       Navigator.pop(context);
                     }
                   },
