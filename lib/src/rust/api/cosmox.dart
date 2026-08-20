@@ -148,7 +148,9 @@ abstract class CosmoxSdk implements RustOpaqueInterface {
 
   Future<SystemInfo> systemInfo();
 
-  Future<String> systemLog();
+  Future<SystemLogResponse> systemLog({required SystemLogRequest params});
+
+  Future<List<LogFileInfo>> systemLogFiles();
 
   Future<void> systemRestart();
 
@@ -368,6 +370,32 @@ class LibraryType {
           scanMode == other.scanMode &&
           label == other.label;
 }
+
+class LogFileInfo {
+  final String name;
+  final String date;
+  final BigInt size;
+
+  const LogFileInfo({
+    required this.name,
+    required this.date,
+    required this.size,
+  });
+
+  @override
+  int get hashCode => name.hashCode ^ date.hashCode ^ size.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LogFileInfo &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          date == other.date &&
+          size == other.size;
+}
+
+enum LogLevel { trace, debug, info, warn, error }
 
 /// FRB-friendly mirror of the SDK's recursive `Metadata<()>` tree.
 ///
@@ -750,6 +778,53 @@ class SystemInfo {
           version == other.version &&
           author == other.author &&
           isFirstBoot == other.isFirstBoot;
+}
+
+class SystemLogRequest {
+  final String? file;
+  final BigInt? limit;
+  final LogLevel? level;
+  final String? keyword;
+
+  const SystemLogRequest({this.file, this.limit, this.level, this.keyword});
+
+  @override
+  int get hashCode =>
+      file.hashCode ^ limit.hashCode ^ level.hashCode ^ keyword.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SystemLogRequest &&
+          runtimeType == other.runtimeType &&
+          file == other.file &&
+          limit == other.limit &&
+          level == other.level &&
+          keyword == other.keyword;
+}
+
+class SystemLogResponse {
+  final String file;
+  final BigInt total;
+  final List<String> logs;
+
+  const SystemLogResponse({
+    required this.file,
+    required this.total,
+    required this.logs,
+  });
+
+  @override
+  int get hashCode => file.hashCode ^ total.hashCode ^ logs.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SystemLogResponse &&
+          runtimeType == other.runtimeType &&
+          file == other.file &&
+          total == other.total &&
+          logs == other.logs;
 }
 
 class Tag {

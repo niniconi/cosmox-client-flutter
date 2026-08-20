@@ -119,7 +119,11 @@ class SdkProxy {
 
   Future<void> systemShutdown() => _void(() => _cosmox.systemShutdown());
 
-  Future<String> systemLog() => _value(() => _cosmox.systemLog());
+  Future<SystemLogResponse> systemLog({required SystemLogRequest params}) =>
+      _value(() => _cosmox.systemLog(params: params));
+
+  Future<List<LogFileInfo>> systemLogFiles() =>
+      _value(() => _cosmox.systemLogFiles());
 
   Future<String> systemAbout() => _value(() => _cosmox.systemAbout());
 

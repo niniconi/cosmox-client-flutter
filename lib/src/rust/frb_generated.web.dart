@@ -64,10 +64,19 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_box_autoadd_bool(dynamic raw);
 
   @protected
+  LogLevel dco_decode_box_autoadd_log_level(dynamic raw);
+
+  @protected
   SearchRequest dco_decode_box_autoadd_search_request(dynamic raw);
 
   @protected
+  SystemLogRequest dco_decode_box_autoadd_system_log_request(dynamic raw);
+
+  @protected
   BigInt dco_decode_box_autoadd_u_64(dynamic raw);
+
+  @protected
+  BigInt dco_decode_box_autoadd_usize(dynamic raw);
 
   @protected
   DeviceSession dco_decode_device_session(dynamic raw);
@@ -114,6 +123,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<LibraryType> dco_decode_list_library_type(dynamic raw);
 
   @protected
+  List<LogFileInfo> dco_decode_list_log_file_info(dynamic raw);
+
+  @protected
   List<MetadataNode> dco_decode_list_metadata_node(dynamic raw);
 
   @protected
@@ -153,6 +165,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<User> dco_decode_list_user(dynamic raw);
 
   @protected
+  LogFileInfo dco_decode_log_file_info(dynamic raw);
+
+  @protected
+  LogLevel dco_decode_log_level(dynamic raw);
+
+  @protected
   MetadataNode dco_decode_metadata_node(dynamic raw);
 
   @protected
@@ -165,7 +183,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
 
   @protected
+  LogLevel? dco_decode_opt_box_autoadd_log_level(dynamic raw);
+
+  @protected
   BigInt? dco_decode_opt_box_autoadd_u_64(dynamic raw);
+
+  @protected
+  BigInt? dco_decode_opt_box_autoadd_usize(dynamic raw);
 
   @protected
   List<String>? dco_decode_opt_list_String(dynamic raw);
@@ -208,6 +232,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SystemInfo dco_decode_system_info(dynamic raw);
+
+  @protected
+  SystemLogRequest dco_decode_system_log_request(dynamic raw);
+
+  @protected
+  SystemLogResponse dco_decode_system_log_response(dynamic raw);
 
   @protected
   Tag dco_decode_tag(dynamic raw);
@@ -284,12 +314,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
+  LogLevel sse_decode_box_autoadd_log_level(SseDeserializer deserializer);
+
+  @protected
   SearchRequest sse_decode_box_autoadd_search_request(
     SseDeserializer deserializer,
   );
 
   @protected
+  SystemLogRequest sse_decode_box_autoadd_system_log_request(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   BigInt sse_decode_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
   DeviceSession sse_decode_device_session(SseDeserializer deserializer);
@@ -340,6 +381,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<LibraryType> sse_decode_list_library_type(SseDeserializer deserializer);
 
   @protected
+  List<LogFileInfo> sse_decode_list_log_file_info(SseDeserializer deserializer);
+
+  @protected
   List<MetadataNode> sse_decode_list_metadata_node(
     SseDeserializer deserializer,
   );
@@ -387,6 +431,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<User> sse_decode_list_user(SseDeserializer deserializer);
 
   @protected
+  LogFileInfo sse_decode_log_file_info(SseDeserializer deserializer);
+
+  @protected
+  LogLevel sse_decode_log_level(SseDeserializer deserializer);
+
+  @protected
   MetadataNode sse_decode_metadata_node(SseDeserializer deserializer);
 
   @protected
@@ -399,7 +449,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
 
   @protected
+  LogLevel? sse_decode_opt_box_autoadd_log_level(SseDeserializer deserializer);
+
+  @protected
   BigInt? sse_decode_opt_box_autoadd_u_64(SseDeserializer deserializer);
+
+  @protected
+  BigInt? sse_decode_opt_box_autoadd_usize(SseDeserializer deserializer);
 
   @protected
   List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
@@ -444,6 +500,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SystemInfo sse_decode_system_info(SseDeserializer deserializer);
+
+  @protected
+  SystemLogRequest sse_decode_system_log_request(SseDeserializer deserializer);
+
+  @protected
+  SystemLogResponse sse_decode_system_log_response(
+    SseDeserializer deserializer,
+  );
 
   @protected
   Tag sse_decode_tag(SseDeserializer deserializer);
@@ -525,13 +589,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_log_level(
+    LogLevel self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_search_request(
     SearchRequest self,
     SseSerializer serializer,
   );
 
   @protected
+  void sse_encode_box_autoadd_system_log_request(
+    SystemLogRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_box_autoadd_u_64(BigInt self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_usize(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_device_session(DeviceSession self, SseSerializer serializer);
@@ -587,6 +666,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_library_type(
     List<LibraryType> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_log_file_info(
+    List<LogFileInfo> self,
     SseSerializer serializer,
   );
 
@@ -651,6 +736,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_list_user(List<User> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_log_file_info(LogFileInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_log_level(LogLevel self, SseSerializer serializer);
+
+  @protected
   void sse_encode_metadata_node(MetadataNode self, SseSerializer serializer);
 
   @protected
@@ -663,7 +754,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
 
   @protected
+  void sse_encode_opt_box_autoadd_log_level(
+    LogLevel? self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_opt_box_autoadd_u_64(BigInt? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_usize(BigInt? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
@@ -712,6 +812,18 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_system_info(SystemInfo self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_system_log_request(
+    SystemLogRequest self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_system_log_response(
+    SystemLogResponse self,
+    SseSerializer serializer,
+  );
 
   @protected
   void sse_encode_tag(Tag self, SseSerializer serializer);

@@ -1,9 +1,10 @@
 pub use cosmox_sdk::types::{
     DeviceQueryRequest, DeviceSession, InitStatus, LibrariesRelatedTags, Library, LibraryPath,
-    LibraryQueryRequest, LibraryType, Metadata, MetadataType, Permission, PluginQueryItem,
-    PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo, ScannerStatus, SearchRequest,
-    SystemInfo, Tag, TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent,
-    UserQueryRequest, UserResp,
+    LibraryQueryRequest, LibraryType, LogLevel, LogFileInfo, Metadata, MetadataType, Permission,
+    PluginQueryItem, PushResponse, Resource, ResourceQueryRequest, Role, ScannerInfo,
+    ScannerStatus, SearchRequest, SystemInfo, SystemLogRequest, SystemLogResponse, Tag,
+    TagCatalogEntry, TagGroup, TagQueryRequest, User, UserLogin, UserLoginIdent, UserQueryRequest,
+    UserResp,
 };
 use cosmox_sdk::{Api, HttpApi, create_client};
 use reqwest::Url;
@@ -185,6 +186,37 @@ pub struct _SearchRequest {
     pub page_size: u64,
 }
 
+#[flutter_rust_bridge::frb(mirror(LogLevel))]
+pub enum _LogLevel {
+    Trace,
+    Debug,
+    Info,
+    Warn,
+    Error,
+}
+
+#[flutter_rust_bridge::frb(mirror(SystemLogRequest))]
+pub struct _SystemLogRequest {
+    pub file: Option<String>,
+    pub limit: Option<usize>,
+    pub level: Option<LogLevel>,
+    pub keyword: Option<String>,
+}
+
+#[flutter_rust_bridge::frb(mirror(SystemLogResponse))]
+pub struct _SystemLogResponse {
+    pub file: String,
+    pub total: usize,
+    pub logs: Vec<String>,
+}
+
+#[flutter_rust_bridge::frb(mirror(LogFileInfo))]
+pub struct _LogFileInfo {
+    pub name: String,
+    pub date: String,
+    pub size: u64,
+}
+
 pub type SdkError = cosmox_sdk::SdkError;
 
 #[flutter_rust_bridge::frb(mirror(SdkError))]
@@ -335,8 +367,12 @@ impl CosmoxSdk {
         self.api.system_about().await
     }
 
-    pub async fn systemLog(&self) -> Result<String, SdkError> {
-        self.api.system_log().await
+    pub async fn systemLog(&self, params: SystemLogRequest) -> Result<SystemLogResponse, SdkError> {
+        self.api.system_log(params).await
+    }
+
+    pub async fn systemLogFiles(&self) -> Result<Vec<LogFileInfo>, SdkError> {
+        self.api.system_log_files().await
     }
 
     pub async fn systemRestart(&self) -> Result<(), SdkError> {
