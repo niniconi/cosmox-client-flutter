@@ -1,4 +1,4 @@
-import 'package:cosmox_client/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
 import 'package:flutter/material.dart';
 
 /// Section title — matches UserPage header styling

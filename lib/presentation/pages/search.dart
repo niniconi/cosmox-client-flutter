@@ -1,4 +1,4 @@
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 

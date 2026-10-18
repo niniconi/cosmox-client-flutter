@@ -1,7 +1,7 @@
 import 'dart:convert' show jsonDecode;
 
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 
 /// Parses a [MetadataNode]'s `extend` map generically and produces grouped,
 /// human-friendly display entries. Keys are grouped by their prefix

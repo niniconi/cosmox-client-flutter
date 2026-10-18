@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/presentation/pages/error.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/cast_tab.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/episodes_tab.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/intro_tab.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/media_playback.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/pages/error.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/cast_tab.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/episodes_tab.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/intro_tab.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/metadata_parser.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/media_playback.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:skeletonizer/skeletonizer.dart';

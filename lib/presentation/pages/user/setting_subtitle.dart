@@ -1,6 +1,6 @@
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/presentation/widgets/drawer.dart';
-import 'package:cosmox_client/presentation/widgets/settings_ui.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/drawer.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

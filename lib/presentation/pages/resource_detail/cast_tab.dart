@@ -1,7 +1,7 @@
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/metadata_parser.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 
 /// The "Cast" tab: characters with cover + voice actors, plus a detail dialog.

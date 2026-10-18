@@ -1,8 +1,8 @@
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/presentation/widgets/form.dart';
-import 'package:cosmox_client/core/common.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/under_construction.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/under_construction.dart';
 
 class EditUserPage extends StatefulWidget {
   const EditUserPage({super.key});

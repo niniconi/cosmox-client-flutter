@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:cosmox_client/core/constants.dart';
+import 'package:cosmox_client_flutter/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 
 class ServerController extends ChangeNotifier {
   static JsonEncoder encoder = const JsonEncoder();

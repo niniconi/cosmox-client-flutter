@@ -1,7 +1,7 @@
-import 'package:cosmox_client/core/layout.dart';
+import 'package:cosmox_client_flutter/core/layout.dart';
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/drawer.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/drawer.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 

@@ -1,8 +1,8 @@
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/presentation/widgets/form.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/core/common.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
 
 class AddPluginComponent extends StatefulWidget {
   const AddPluginComponent({super.key});

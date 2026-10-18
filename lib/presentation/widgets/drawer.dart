@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
 
 class NavigationRouteInfo {
   final String label;

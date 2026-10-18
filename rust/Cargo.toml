@@ -1,5 +1,5 @@
 [package]
-name = "rust_lib_cosmox"
+name = "rust_lib_cosmox_client_flutter"
 version = "0.0.1"
 edition = "2024"
 
@@ -7,7 +7,7 @@ edition = "2024"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-flutter_rust_bridge = { version = "=2.12.0", features = ["chrono"] }
+flutter_rust_bridge = { version = "=2.13.0", features = ["chrono"] }
 cosmox-sdk = { git = "https://github.com/niniconi/cosmox.git", branch = "dev", package = "cosmox-sdk", default-features = false, features = ["native", "web"] }
 chrono = "0.4.41"
 reqwest = { version = "0.13", default-features = false, features = ["json", "rustls"] }

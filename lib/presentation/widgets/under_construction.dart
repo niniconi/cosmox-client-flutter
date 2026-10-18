@@ -1,7 +1,7 @@
-import 'package:cosmox_client/core/global_keys.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 /// Inline under-construction placeholder for embedding inside pages
 /// (e.g. inside a ShellRoute or an existing Scaffold).

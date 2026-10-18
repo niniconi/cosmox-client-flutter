@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cosmox_client/core/common.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
 
 void main() {
   group('Validate', () {

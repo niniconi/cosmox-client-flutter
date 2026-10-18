@@ -1,12 +1,12 @@
-import 'package:cosmox_client/presentation/widgets/form.dart';
-import 'package:cosmox_client/core/constants.dart';
-import 'package:cosmox_client/core/common.dart';
-import 'package:cosmox_client/core/state.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/core/constants.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
+import 'package:cosmox_client_flutter/core/state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 class GlobalSettingPage extends StatefulWidget {
   const GlobalSettingPage({super.key});

@@ -1,6 +1,6 @@
-import 'package:cosmox_client/presentation/widgets/container_info.dart';
-import 'package:cosmox_client/presentation/widgets/form.dart';
-import 'package:cosmox_client/presentation/widgets/path_selector.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/container_info.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/path_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

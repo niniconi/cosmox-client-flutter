@@ -1,14 +1,14 @@
-import 'package:cosmox_client/presentation/widgets/form.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/models/lang.dart';
-import 'package:cosmox_client/models/location.dart';
-import 'package:cosmox_client/core/state.dart';
-import 'package:cosmox_client/core/common.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/models/lang.dart';
+import 'package:cosmox_client_flutter/models/location.dart';
+import 'package:cosmox_client_flutter/core/state.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 String _adminPassword = '';

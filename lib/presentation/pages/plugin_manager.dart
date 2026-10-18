@@ -1,9 +1,9 @@
-import 'package:cosmox_client/core/global_keys.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/presentation/widgets/add_plugin.dart';
-import 'package:cosmox_client/presentation/widgets/dialog.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/add_plugin.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/dialog.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:responsive_framework/responsive_framework.dart';

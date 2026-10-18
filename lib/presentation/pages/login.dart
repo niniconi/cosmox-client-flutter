@@ -1,14 +1,14 @@
-import 'package:cosmox_client/core/common.dart';
-import 'package:cosmox_client/core/global_keys.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/core/state.dart';
-import 'package:cosmox_client/presentation/widgets/dialog.dart';
+import 'package:cosmox_client_flutter/core/common.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/core/state.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/form.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/form.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
 
 class LoginPage extends StatefulWidget {
   final Function(String? username, String? password)? onSubmitted;

@@ -1,6 +1,6 @@
 // The Android Gradle Plugin builds the native code with the Android NDK.
 
-group 'com.flutter_rust_bridge.rust_lib_cosmox'
+group 'com.flutter_rust_bridge.rust_lib_cosmox_client_flutter'
 version '1.0'
 
 buildscript {
@@ -26,12 +26,12 @@ apply plugin: 'com.android.library'
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace 'com.flutter_rust_bridge.rust_lib_cosmox'
+        namespace 'com.flutter_rust_bridge.rust_lib_cosmox_client_flutter'
     }
 
     // Bumping the plugin compileSdkVersion requires all clients of this plugin
     // to bump the version in their app.
-    compileSdkVersion 33
+    compileSdkVersion 36
 
     // Use the NDK version
     // declared in /android/app/build.gradle file of the Flutter project.
@@ -52,5 +52,5 @@ android {
 apply from: "../cargokit/gradle/plugin.gradle"
 cargokit {
     manifestDir = "../../rust"
-    libname = "rust_lib_cosmox"
+    libname = "rust_lib_cosmox_client_flutter"
 }

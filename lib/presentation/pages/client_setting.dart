@@ -1,12 +1,12 @@
-import 'package:cosmox_client/core/constants.dart';
-import 'package:cosmox_client/core/state.dart';
-import 'package:cosmox_client/presentation/widgets/settings_ui.dart';
+import 'package:cosmox_client_flutter/core/constants.dart';
+import 'package:cosmox_client_flutter/core/state.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/settings_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' as platform;
 
 import 'package:provider/provider.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 class ClientSettingPage extends StatefulWidget {
   const ClientSettingPage({super.key});

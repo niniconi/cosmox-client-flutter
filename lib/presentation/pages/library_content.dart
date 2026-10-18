@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/under_construction.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/under_construction.dart';
 
 class LibraryContentPage extends StatefulWidget {
   const LibraryContentPage({super.key, required this.lid});

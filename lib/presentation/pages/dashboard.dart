@@ -1,11 +1,11 @@
-import 'package:cosmox_client/core/global_keys.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:logging/logging.dart';
-import 'package:cosmox_client/presentation/widgets/dialog.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/core/app_info.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/dialog.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/core/app_info.dart';
 
 class LineChartSample2 extends StatefulWidget {
   const LineChartSample2({super.key});

@@ -1,9 +1,9 @@
-import 'package:cosmox_client/core/state.dart';
+import 'package:cosmox_client_flutter/core/state.dart';
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/drawer.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/drawer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 class HomeShellPage extends StatefulWidget {
   final Widget child;

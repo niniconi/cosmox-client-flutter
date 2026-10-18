@@ -1,11 +1,11 @@
-import 'package:cosmox_client/core/global_keys.dart';
-import 'package:cosmox_client/presentation/pages/resource_detail/metadata_parser.dart';
-import 'package:cosmox_client/presentation/widgets/page_switcher.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
+import 'package:cosmox_client_flutter/presentation/pages/resource_detail/metadata_parser.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/page_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
 
 class LibraryViewPage extends StatefulWidget {
   const LibraryViewPage({super.key, required this.lid});

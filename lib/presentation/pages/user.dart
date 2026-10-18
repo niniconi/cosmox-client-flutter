@@ -1,11 +1,11 @@
-import 'package:cosmox_client/core/global_keys.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:cosmox_client/core/sdk_proxy.dart';
-import 'package:cosmox_client/src/rust/api/cosmox.dart';
-import 'package:cosmox_client/presentation/pages/error.dart';
+import 'package:cosmox_client_flutter/core/sdk_proxy.dart';
+import 'package:cosmox_client_flutter/src/rust/api/cosmox.dart';
+import 'package:cosmox_client_flutter/presentation/pages/error.dart';
 import 'package:go_router/go_router.dart';
 
 class UserPage extends StatefulWidget {

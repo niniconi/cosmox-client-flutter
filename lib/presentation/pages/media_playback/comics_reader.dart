@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:ui' show ImageFilter;
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cosmox_client/core/global_keys.dart';
+import 'package:cosmox_client_flutter/core/global_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 class ComicsPlayerPage extends StatefulWidget {
   const ComicsPlayerPage({super.key});

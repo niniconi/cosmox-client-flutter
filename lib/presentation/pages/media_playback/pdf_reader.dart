@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/presentation/widgets/under_construction.dart';
+import 'package:cosmox_client_flutter/presentation/widgets/under_construction.dart';
 
 class PDFReaderPage extends StatefulWidget {
   const PDFReaderPage({super.key, required this.pdfUrl});

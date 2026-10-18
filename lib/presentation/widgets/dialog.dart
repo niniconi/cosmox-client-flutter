@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cosmox_client/l10n/app_localizations.dart';
+import 'package:cosmox_client_flutter/l10n/app_localizations.dart';
 
 class DialogProvider {
   static AlertDialog alert(
