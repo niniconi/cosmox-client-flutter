@@ -1,6 +1,6 @@
 {
-    "name": "cosmox_client",
-    "short_name": "cosmox_client",
+    "name": "cosmox_client_flutter",
+    "short_name": "cosmox_client_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
